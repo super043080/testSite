@@ -30,6 +30,7 @@ header {
   left: 0;
   width: 100%;
   z-index: 1000;
+  background: white;
 }
 .site-logo {
   position: relative;
@@ -43,6 +44,7 @@ header {
 .logo {
   opacity: 1;
 }
+
 .site-nav {
   position: relative;
   float: right;
@@ -51,10 +53,14 @@ header {
   left: 0;
   display: block !important;
   width: 80%;
-  padding: .75em 1em 0 0;
-  opacity: .95;
-  background: none;
+  padding: 0.75em 1em 0 0;
+  opacity: 1;
+  background: white;
 }
+
+
+
+
 .site-nav ul {
   list-style-type: none;
   margin: 0;
@@ -66,19 +72,19 @@ header {
   margin-left: 1.5em;
 }
 .site-nav ul li a {
-  font-size: .85em;
+  font-size: 0.85em;
   padding-bottom: .5em;
   text-decoration: none;
   letter-spacing: .15em;
   text-transform: uppercase;
-  color: #fff;
+  color: black;
   -webkit-transition: color .3s;
   transition: color .3s;
 }
 
 .site-nav ul li a:hover {
   outline: none;
-  border-bottom: 1px solid white;
+  border-bottom: 1px solid black;
 }
 .hero {
   position: relative;
