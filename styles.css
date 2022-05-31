@@ -1,98 +1,67 @@
-@charset 'UTF-8';
-
-html,
-html * {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+* {
+	text-decoration: none;
 }
+
 
 body {
   font-family: arial, sans-serif;
   background: white;
 }
-img {
-  width: 100%;
-  max-width: 100%;
-  height: auto;
-  vertical-align: middle;
-  -webkit-transform: translate3d(0,0,0);
-          transform: translate3d(0,0,0);
-}
-a, a:visited {
-    color: inherit;
-}
-header {
-  position: fixed;
-  padding: 1.5em;
-  top: 0;
-  left: 0;
-  width: 100%;
-  z-index: 1000;
-  background-color: white;
-}
-.site-logo {
-  position: relative;
-  display: block;
-  float: left;
-  width: 10.1em;
-}
-.site-logo img {
-  width: 10.1em;
-}
-.logo {
-  opacity: 1;
-}
-.site-nav {
-  position: relative;
-  float: right;
-  z-index: 400;
-  top: 0.2em;
-  left: 0;
-  display: block !important;
-  width: 80%;
-  padding: .75em 1em 0 0;
-  opacity: .95;
-  background: none;
+
+header{
+	background-color:white;
+	width: 100%;
 }
 
-.site-nav ul {
-  list-style-type:none;
-  margin: 0;
-  text-align: right;
-}
-.site-nav ul li {
-  display: inline-block;
-  margin-bottom: 0;
-  margin-left: 1.5em;
-}
-
-.site-nav ul li a {
-  font-size: .85em;
-  padding-bottom: .5em;
-  text-decoration: none;
-  letter-spacing: .15em;
-  text-transform: uppercase;
-  color: black;
- 
+.logo{
+	font-family: 'acumin-pro-extra-condensed', sans-serif;
+	font-size: 45px;
+	color: black;
+	font-weight: 1000;
+	text-transform: uppercase;
+	display:block;
+	margin: 0 auto;
+	background-color: white;
+	text-align: center;
+	letter-spacing: 1px;
 }
 
-.site-nav ul li a:hover {
+header nav{
+	
+	display: block;
+	margin: 0 auto;
+	width:fit-content;
+	padding-top: 20px;
+	padding-bottom: 10px;
+	text-align: center;
+	
+}
+
+
+header nav  a{
+	font-size:12px;
+	color: black;
+	text-transform: uppercase;
+	padding: 0 0.4em;
+	font-weight:500;
+	
+}
+
+
+header nav  a:hover {
   outline: none;
-  border-bottom: 1.5px solid red;
+  border-bottom: 1.5px solid grey;
 }
 
 
 
 .home {
   position:relative;
-  height: 54vw;
   background-color: white;
 }
 .home-content {
   font-family: 'acumin-pro-extra-condensed', sans-serif;
   position: absolute; 
-  padding: 3em 10em; 
   top: 0;
   bottom: 0;
   width: 100%;
@@ -102,136 +71,51 @@ header {
 .privateSupport{
 	font-size: 2em;
 	font-weight:bold;
-	}
-
-
-.vision {
-  position:relative;
-  height: 54vw;
-  background-color: white;
 }
-.vision-content {
-  display: flex;
-  flex-direction: column;
-  font-family: 'acumin-pro-extra-condensed', sans-serif;
-  position: absolute; 
-  padding: 0em 20em; 
-  top: 0;
-  bottom: 0;
-  width: 100%;
-}
-
-
-.vision-content p {
-  font-family: 'acumin-pro-extra-condensed', sans-serif;
-  font-size: 1em;
-  line-height: 1;
-  position: relative;
-  text-align: justify;
-  letter-spacing: .2em;
-}
-
-
 
 h2 {
 	font-weight: 100;
-	font-size: 2em;
-    line-height: 2.2;
+	font-size: 1.0em;
+    line-height: 2;
 	margin-bottom: -.35em;
-	padding-top: 13%;
+	padding-top: 10%;
 	letter-spacing: .3em;
 	text-transform: uppercase;
 	text-shadow: 0px 0px 8px rgba(0, 0, 0,.2);
 }
-h1 {
-  margin-bottom: 1.5%;
-  text-transform: uppercase;
-  text-shadow: 0px 0px 10px rgba(0, 0, 0,.05);
-  letter-spacing: .85em;
-  margin-left: .7em;
-  font-size: 8.5vw;
-	
-}
+
 h3 {
-  font-size: 1.4em;
-  font-weight: 500;
-  line-height: 1.5;
-  letter-spacing: .35em;
+  font-size: 0.8em;
+  font-weight: 100;
+  line-height: 1;
+  letter-spacing: .2em;
   text-transform: uppercase;
   text-shadow: 0px 0px 8px rgba(0, 0, 0,.2);
 }
-.intro {
-  position: relative;
-  color: #343144;
-  background: #fff;
-  padding: 12.5em 6em 14.5em;
+
+
+.privateSupport{
+	font-size: 1em;
+	font-weight:bold;
+	line-height: 1.5;
+	}
+
+.subject{
+	padding-top:10px;
+		
 }
-.intro-text {
-  position: relative;
-}
-.intro p {
-  font-family: 'acumin-pro-extra-condensed', sans-serif;
-  font-size: 2.5em;
-  line-height: 1.8;
-  position: relative;
-  z-index: 200;
-  text-align: center;
-  letter-spacing: .325em;
-  text-transform: uppercase;
-}
-.artworks {
-  position: relative;
-  width: 100%;
-  overflow: hidden;
-}
-.artwork {
-  display: flex;
-}
-.artwork .artwork-piece {
-  padding: 8% 0 8% 23.5%;
-  background-image:-moz-linear-gradient( 135deg, rgb(160,55,220) 0%, rgb(83,200,234) 100%);
-  background-image: -webkit-linear-gradient( 135deg, rgb(160,55,220) 0%, rgb(83,200,234) 100%);
-  background-image: -ms-linear-gradient( 135deg, rgb(160,55,220) 0%, rgb(83,200,234) 100%);
-  width: 50%;
-}
-.artwork-piece figure {
-  position: relative;
-}
-.artwork-piece figure img {
-  position: relative;
-  z-index: 100;
-}
-.artwork .artwork-description {
-  background: #26223e;
-  color: #fff;
-  width: 50%;
-  padding: 11.25em 13em 11.5em;
-}
-.artwork-title {
-  font-family: 'acumin-pro-extra-condensed', sans-serif;
-  font-size: 3em;
-  font-weight: 10000;
-  padding: 2em 0 0 0;
-  letter-spacing: .36em;
-  text-transform: uppercase;
-  line-height: 1.5;
-  max-width: 20em;
-  margin-bottom: .5em;
-}
-.artwork-text {
-  font-size: 1.1em;
-  line-height: 1.9;
-  opacity: .8;
-  
-}
-.see-more {
-  font-size: 1.5em;
-  display: inline-block;
-  margin-top: 1em;
-  text-decoration: none;
-  letter-spacing: .2em;
-}
-.see-more:hover {
-  outline: none;
-  border-bottom: 1.5px solid red;
-}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
