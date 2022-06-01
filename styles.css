@@ -115,6 +115,7 @@ h3 {
     width: 100%;
 	padding-top: 30px;
 	font-family: 'acumin-pro-extra-condensed', sans-serif;
+	font-weight:500;
 	
 }
 
@@ -122,17 +123,19 @@ h3 {
 	width: 90%;
     font-size: 14px;
 	text-align: justify;
-	margin:10px auto;
+	margin:0 auto;
 	font-family: arial, sans-serif;
+	
+	
 	
 	
 }
 
-.main p {
+.main section {
     width: 90%;
-    font-size: 12 px;
     text-align: justify;
 	margin:5px auto;
+	font-size: 16px;
     
 }
 
