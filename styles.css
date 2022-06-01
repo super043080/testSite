@@ -179,10 +179,11 @@ h3 {
 
 
 .profile ol{
+	width: 90%;
 	font-size: 18px;
-	list-style-position: outside;
-	background-color: yellow;
-	margin:0;
+	list-style-position: inside;
+	text-align: justify;
+	margin:5px auto;
 	padding:0;
 	
 }
