@@ -149,7 +149,7 @@ h3 {
     justify-content: top;
     width: 100%;
 	padding-top: 30px;
-	font-family: 'arial', sans-serif;
+	font-family: 'acumin-pro-extra-condensed', sans-serif;
 	font-weight:500;
 	
 }
@@ -165,15 +165,14 @@ h3 {
 
 
 .profile ul{
-	font-size: 10px;
-	
+	font-size: 14px;
 }
 
 .profile section {
     width: 90%;
     text-align: justify;
 	margin:5px auto;
-	font-size: 10px;
+	font-size: 16px;
 	
     
 }
