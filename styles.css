@@ -178,6 +178,17 @@ h3 {
 }
 
 
+.profile ol{
+	font-size: 18px;
+	list-style-position: outside;
+	background-color: yellow;
+	margin:0;
+	padding:0;
+	
+}
+
+
+
 .thesis{
 	width: 90%;
     font-size: 14px;
@@ -189,6 +200,15 @@ h3 {
 }
 
 
+.scholar{
+	width: 90%;
+    font-size: 14px;
+	text-align: center;
+	margin:0 auto;
+	font-family: 'arial', sans-serif;
+	list-style-type: none;
+	
+}
 
 
 
