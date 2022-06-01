@@ -149,7 +149,7 @@ h3 {
     justify-content: top;
     width: 100%;
 	padding-top: 30px;
-	font-family: 'acumin-pro-extra-condensed', sans-serif;
+	font-family: 'arial', sans-serif;
 	font-weight:500;
 	
 }
@@ -159,9 +159,13 @@ h3 {
     font-size: 14px;
 	text-align: center;
 	margin:0 auto;
-	font-family: arial, sans-serif;
+	font-family: 'arial', sans-serif;
 	
-	
+}
+
+
+.profile ul{
+	font-size: 10px;
 	
 }
 
@@ -169,8 +173,7 @@ h3 {
     width: 90%;
     text-align: justify;
 	margin:5px auto;
-	font-size: 16px;
-	letter-spacing: 0.06em;
+	font-size: 10px;
 	
     
 }
