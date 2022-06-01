@@ -73,7 +73,7 @@ header nav  a:hover {
 	font-weight:bold;
 }
 
-h2 {
+.home-content h2 {
 	font-weight: 100;
 	font-size: 1.0em;
     line-height: 2;
@@ -105,8 +105,34 @@ h3 {
 		
 }
 
+.main{
+	display: flex;
+    background-color: white;
+    color: black;
+    flex-flow: column wrap;
+    justify-content: top;
+    width: 100%;
+	padding-top: 30px;
+	
+}
 
+.main h2{
+	width: 90%;
+    font-size: 14px;
+	text-align: justify;
+	margin:10px auto;
+	font-family: arial, sans-serif;
+	
+	
+}
 
+.main p {
+    width: 90%;
+    font-size: 16px;
+    text-align: justify;
+	margin:5px auto;
+    
+}
 
 
 
