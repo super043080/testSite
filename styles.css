@@ -82,6 +82,7 @@ header nav  a:hover {
 	letter-spacing: .3em;
 	text-transform: uppercase;
 	text-shadow: 0px 0px 8px rgba(0, 0, 0,.2);
+	
 }
 
 h3 {
@@ -113,6 +114,7 @@ h3 {
     justify-content: top;
     width: 100%;
 	padding-top: 30px;
+	font-family: 'acumin-pro-extra-condensed', sans-serif;
 	
 }
 
@@ -128,7 +130,7 @@ h3 {
 
 .main p {
     width: 90%;
-    font-size: 16px;
+    font-size: 12 px;
     text-align: justify;
 	margin:5px auto;
     
