@@ -4,7 +4,7 @@
 
 
 body {
-  font-family: arial, sans-serif;
+  font-family: 'acumin-pro-extra-condensed', sans-serif;
   background: white;
 }
 
@@ -128,7 +128,6 @@ h3 {
 	
 	
 	
-	
 }
 
 .main section {
@@ -142,8 +141,39 @@ h3 {
 }
 
 
+.profile{
+	display: flex;
+    background-color: white;
+    color: black;
+    flex-flow: column wrap;
+    justify-content: top;
+    width: 100%;
+	padding-top: 30px;
+	font-family: 'acumin-pro-extra-condensed', sans-serif;
+	font-weight:500;
+	
+}
 
+.profile h2{
+	width: 90%;
+    font-size: 14px;
+	text-align: center;
+	margin:0 auto;
+	font-family: arial, sans-serif;
+	
+	
+	
+}
 
+.profile section {
+    width: 90%;
+    text-align: justify;
+	margin:5px auto;
+	font-size: 16px;
+	letter-spacing: 0.06em;
+	
+    
+}
 
 
 
