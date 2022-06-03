@@ -212,6 +212,40 @@ h3 {
 }
 
 
+.program{
+	display: flex;
+    background-color: white;
+    color: black;
+    flex-flow: column wrap;
+    justify-content: center;
+    width: 100%;
+	padding-top: 30px;
+	font-family: 'acumin-pro-extra-condensed', sans-serif;
+	font-weight:500;
+	
+}
+
+.program h2{
+	width: 90%;
+    font-size: 14px;
+	text-align: left;
+	margin:0 auto;
+	font-family: 'arial', sans-serif;
+	
+}
 
 
+.program ul{
+	font-size: 18px;
+}
+
+.program section {
+    width: 90%;
+    text-align: justify;
+	margin:5px auto;
+	font-size: 14px;
+	
+	
+    
+}
 
