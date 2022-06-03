@@ -244,8 +244,40 @@ h3 {
     text-align: justify;
 	margin:5px auto;
 	font-size: 16px;
-	
-	
     
 }
+
+.contactUs{
+
+    text-align: center;
+	width: fit-content;
+	display:block;
+	margin: 0 auto;
+	background-color: none;
+	color:black;
+	padding:3px 20px 5px 20px;
+	border-radius: 100px;
+	border: 2px solid black;
+	
+	
+}
+
+
+.contactUs:hover{
+
+     
+	background-color: black;
+	color:white;
+	 
+	
+}
+
+
+
+
+
+
+
+
+
 
