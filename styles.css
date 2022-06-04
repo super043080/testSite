@@ -427,7 +427,107 @@ input[type=submit]:hover {
 		
 	}
 	
+	
+	.main{
+		display: flex;
+		background-color: white;
+		color: black;
+		flex-flow: column wrap;
+		justify-content: top;
+		width: 100%;
+		padding-top: 80px;
+		font-family: 'arial', sans-serif;
+		font-weight:500;
+		margin: 0 auto;
 }
+
+.main h2{
+	width: 80%;
+    font-size: 18px;
+	text-align: justify;
+	margin:0 auto;
+	font-family: arial, sans-serif;	
+}
+
+.main section {
+    width: 80%;
+    text-align: justify;
+	font-size: 18px;    
+	
+}
+	
+	
+	.container{
+		width:70%;
+		margin: 0 auto;
+	}
+	
+	.contactPage address{	
+		width: 70%;
+		font-size: 14px;
+		text-align: left;
+		margin:0 auto;
+		font-family: 'arial', sans-serif;	
+	}
+	
+	
+	.program{
+		display: flex;
+		background-color: white;
+		color: black;
+		flex-flow: column wrap;
+		width: 100%;
+		padding-top: 50px;
+		font-family: 'acumin-pro-extra-condensed', sans-serif;
+		font-weight:500;
+		margin:0 auto;
+	
+	}
+
+	.program h2{
+		width: 80%;
+		font-size: 16px;
+		
+		padding:0 100px;
+		font-family: 'arial', sans-serif;	
+	}
+
+	.program ul{
+		font-size: 20px;
+		padding:0 35vw;
+	}
+
+	.program section {
+		width: 70%;
+		text-align: justify;
+		font-size: 20px;    
+		padding-left: 20vw;
+	}
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
