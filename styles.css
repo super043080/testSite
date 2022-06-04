@@ -340,16 +340,17 @@ input[type=tel], select, textarea {
 }
 
 input[type=submit] {
-  background-color: #04AA6D;
-  color: white;
+  background-color: white;
+  color: black;
   padding: 12px 20px;
-  border: none;
+  border: 2px solid black;
   border-radius: 4px;
   cursor: pointer;
 }
 
 input[type=submit]:hover {
-  background-color: #45a049;
+  background-color: black;
+  color:white
 }
 
 .container {
