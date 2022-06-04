@@ -67,11 +67,6 @@ header nav  a:hover {
   text-align: center;
 }
 
-.privateSupport{
-	font-size: 2em;
-	font-weight:bold;
-}
-
 .home-content h2 {
 	font-weight: 100;
 	font-size: 1.0em;
@@ -81,7 +76,7 @@ header nav  a:hover {
 	letter-spacing: .3em;
 	text-transform: uppercase;
 	text-shadow: 0px 0px 8px rgba(0, 0, 0,.2);
-	
+		
 }
 
 h3 {
@@ -331,6 +326,104 @@ input[type=submit]:hover {
   padding: 20px;
 }
 
+@media only screen and (min-width: 580px) and (max-width: 1000px) {
+	
+	.home-content h2 {
+		padding-left: 10vw;
+		padding-right: 10vw;
+	
+	}
+	
+}
+
+
+@media only screen and (min-width: 1000px) {
+	
+	.logo{
+		float:left;
+		padding-top: 5px;
+		padding-bottom: 5px;
+		padding-left: 2vw;
+		padding-right: 2vw;
+	}
+	
+	header nav{
+	
+		display:block;
+		width:fit-content;
+		padding-top: 30px;
+		padding-bottom: 25px;
+		text-align: center;
+		margin-right: 35px;
+		
+	}
+
+	header nav  a{
+		font-size:14px;
+		color: black;
+		text-transform: uppercase;
+		padding: 0 1em;
+		font-weight:500;
+		letter-spacing: .15em;
+	
+	}
+	
+	.home {
+  		position:relative;
+  		background-color: white;
+	}
+	
+	.home-content {
+		font-family: 'acumin-pro-extra-condensed', sans-serif;
+		position: absolute; 
+		Display:block;
+		width: 100%;
+		padding: 0 12vw;
+		text-align: center;
+		margin: 0 auto;
+	}
+	
+	.home-content h2 {
+		font-weight: 100;
+		font-size: 2em;
+		line-height: 2.2;
+		padding-top: 9%;
+		letter-spacing: .3em;
+		text-transform: uppercase;
+		text-shadow: 0px 0px 8px rgba(0, 0, 0,.2);
+	
+	}
+	
+	.privateSupport{
+		font-size: 2em;
+		font-weight:bold;
+		letter-spacing: 0.35em
+	}
+	
+	
+	
+	h3 {
+	    font-size: 1.4em;
+	    font-weight: 100;
+	    line-height: 0.5;
+	    letter-spacing: .25em;
+	    text-transform: uppercase;
+	    text-shadow: 0px 0px 8px rgba(0, 0, 0,.2);
+	}
+
+
+
+	.subject{
+		padding-top:10px;
+		
+	}
+	
+	.subject a{
+		font-size: 1.4em;
+		
+	}
+	
+}
 
 
 
