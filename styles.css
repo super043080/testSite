@@ -134,7 +134,7 @@ h3 {
     background-color: white;
     color: black;
     flex-flow: column wrap;
-    justify-content: top;
+    justify-content:center;
     width: 100%;
 	padding-top: 30px;
 	font-family: 'acumin-pro-extra-condensed', sans-serif;
@@ -486,8 +486,7 @@ input[type=submit]:hover {
 
 	.program h2{
 		width: 80%;
-		font-size: 16px;
-		
+		font-size: 16px;		
 		padding:0 100px;
 		font-family: 'arial', sans-serif;	
 	}
@@ -504,6 +503,58 @@ input[type=submit]:hover {
 		padding-left: 20vw;
 	}
 
+	
+	
+	
+	.profile{
+		display: flex;
+		background-color: white;
+		color: black;
+		flex-flow: column wrap;
+		width: 100%;
+		padding-top: 50px;
+		font-family: 'acumin-pro-extra-condensed', sans-serif;
+		font-weight:500;
+		margin:0 auto;
+		
+	
+	}
+	
+	.profile h2{
+		width: 100%;
+		font-size: 16px;		
+		font-family: 'arial', sans-serif;	
+		
+		
+	}
+	
+	
+	.profile ul{
+		font-size: 20px;
+		padding:0 25vw;
+	}
+
+	.profile section {
+		width: 50%;
+		text-align: justify;
+		font-size: 20px;    
+		
+	}
+	
+	
+	.profile ol{
+		width: 50%;
+		font-size: 18px;
+		list-style-position: inside;
+		text-align: justify;
+		margin: 1vw auto;
+		
+		
+			
+		
+		
+		
+}
 
 }
 
