@@ -59,17 +59,33 @@
 			  	</p>
 				
 				<p>
-					<label>Your Email: <input type="email" name="email" /></label>
+					<label>Email</label>
+					<br>
+					<input type="email" id="email" name="email" placeholder="bob@gmail.com">
 				</p>
 				  
 				<p>
-					<label>Your Role: <select name="role[]" multiple>
-					  <option value="leader">Leader</option>
-					  <option value="follower">Follower</option>
-					</select></label>
+					<label>Phone</label>
+					<br>
+					<input type="tel" id="phone" name="phone" placeholder="1234-1234" pattern="[0-9]{4}-[0-9]{4}" required>
 				</p>
+				
 				<p>
-					<label>Message: <textarea name="message"></textarea></label>
+					<label>Subject</label>
+					<br>
+					<select id="subject" name="subject">
+						<option value="Maths">Maths</option>
+						<option value="Physics">Physics</option>
+						<option value="Scratch">Scratch</option>
+						<option value="Others">Others</option>
+					</select>					
+				</p>
+				
+				<p>
+					<label>Enquiry</label>
+					<br>
+					<textarea id="enquiry" name="enquiry" placeholder="Please drop us a message." style="height:200px"></textarea>
+					
 				</p>
 			    <p>
 				<button type="submit">Send</button>
