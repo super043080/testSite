@@ -10,6 +10,6 @@
 	$subject = 'Contact enquiry';
 	$headers = 'From : super043080@yahoo.com';
 
-	//mail($to,$subject,$enquiry,$headers)
+	mail($to,$subject,$enquiry,$headers)
 
 ?>
