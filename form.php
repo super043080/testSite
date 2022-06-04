@@ -8,8 +8,8 @@
 
 	$to = 'bernardbunlerdwu@gmail.com';
 	$subject = 'Contact enquiry';
-	$headers = 'From : '.$email;
+	$headers = 'From : super043080@yahoo.com';
 
-	mail($to,$subject,$enquiry,$headers)
+	//mail($to,$subject,$enquiry,$headers)
 
 ?>
