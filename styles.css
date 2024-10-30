@@ -108,7 +108,7 @@ h3 {
     justify-content: top;
     width: 100%;
 	padding-top: 30px;
-	font-family: 'arial', sans-serif;
+	font-family: 'Segoe UI', sans-serif;
 	font-weight:500;
 	
 }
@@ -431,7 +431,7 @@ input[type=submit]:hover {
 	.main{
 		display: flex;
 		background-color: white;
-		color: darkblue;
+		color: black;
 		flex-flow: column wrap;
 		justify-content: top;
 		width: 100%;
