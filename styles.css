@@ -431,7 +431,7 @@ input[type=submit]:hover {
 	.main{
 		display: flex;
 		background-color: white;
-		color: black;
+		color: darkblue;
 		flex-flow: column wrap;
 		justify-content: top;
 		width: 100%;
