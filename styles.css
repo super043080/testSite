@@ -442,20 +442,20 @@ input[type=submit]:hover {
 		margin: 0 auto;
 }
 
-.main h2{
-	width: 50%;
-    font-size: 18px;
-	text-align: justify;
-	margin:0 auto;
-	font-family: arial, sans-serif;	
-}
+	.main h2{
+		width: 50%;
+		font-size: 18px;
+		text-align: justify;
+		margin:0 auto;
+		font-family: arial, sans-serif;	
+	}
 
-.main section {
-    width: 50%;
-    text-align: justify;
-	font-size: 18px;    
-	
-}
+	.main section {
+		width: 50%;
+		text-align: justify;
+		font-size: 18px;    
+
+	}
 	
 	
 	.container{
@@ -549,14 +549,8 @@ input[type=submit]:hover {
 		list-style-position: inside;
 		text-align: justify;
 		margin: 1vw auto;
-		
-		
 			
-		
-		
-		
-}
-
+	}
 }
 
 
