@@ -4,7 +4,7 @@
 }
 
 body {
-  font-family: arial, sans-serif;
+  font-family: 'Segoe UI', sans-serif;
   background: white;
 }
 
@@ -39,7 +39,7 @@ header nav{
 
 
 header nav  a{
-	font-size:12px;
+	font-size:14px;
 	color: black;
 	text-transform: uppercase;
 	padding: 0 0.4em;
@@ -356,7 +356,7 @@ input[type=submit]:hover {
 	
 		display:block;
 		width:fit-content;
-		padding-top: 30px;
+		padding-top: 15px;
 		padding-bottom: 25px;
 		text-align: center;
 		margin-right: 35px;
@@ -364,7 +364,7 @@ input[type=submit]:hover {
 	}
 
 	header nav  a{
-		font-size:14px;
+		font-size:16px;
 		color: black;
 		text-transform: uppercase;
 		padding: 0 1em;
