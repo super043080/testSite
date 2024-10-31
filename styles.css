@@ -364,7 +364,7 @@ input[type=submit]:hover {
 	}
 
 	header nav  a{
-		font-size:14px;
+		font-size:16px;
 		color: black;
 		text-transform: uppercase;
 		padding: 0 1em;
@@ -379,7 +379,7 @@ input[type=submit]:hover {
 	}
 	
 	.home-content {
-		font-family: 'acumin-pro-extra-condensed', sans-serif;
+		font-family: 'Segoe UI', sans-serif;
 		position: absolute; 
 		Display:block;
 		width: 100%;
@@ -390,7 +390,7 @@ input[type=submit]:hover {
 	
 	.home-content h2 {
 		font-weight: 100;
-		font-size: 2em;
+		font-size: 1.5em;
 		line-height: 2.2;
 		padding-top: 9%;
 		letter-spacing: .3em;
