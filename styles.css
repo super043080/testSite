@@ -210,7 +210,7 @@ h3 {
     justify-content: center;
     width: 100%;
 	padding-top: 30px;
-	font-family: 'acumin-pro-extra-condensed', sans-serif;
+	font-family: 'Segoe UI', sans-serif;
 	font-weight:500;
 	
 }
@@ -220,7 +220,7 @@ h3 {
     font-size: 14px;
 	text-align: left;
 	margin:0 auto;
-	font-family: 'arial', sans-serif;	
+	
 }
 
 .program ul{
@@ -229,7 +229,7 @@ h3 {
 
 .program section {
     width: 90%;
-    text-align: justify;
+    text-align: left;
 	margin:5px auto;
 	font-size: 18px;    
 }
