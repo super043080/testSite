@@ -437,7 +437,7 @@ input[type=submit]:hover {
 		justify-content: top;
 		width: 100%;
 		padding-top: 80px;
-		font-family: 'Times New Roman', sans-serif;
+		font-family: 'Segoe UI', sans-serif;
 		font-weight:500;
 		margin: 0 auto;
 }
@@ -447,7 +447,7 @@ input[type=submit]:hover {
 		font-size: 16px;
 		text-align: left;
 		margin:0 auto;
-		font-family: 'Times New Roman', sans-serif;	
+		font-family: 'Segoe UI', sans-serif;	
 	}
 
 	.main section {
