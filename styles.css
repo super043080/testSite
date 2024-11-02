@@ -478,6 +478,14 @@ input[type=submit]:hover {
 		font-family: 'Segoe UI', sans-serif;	
 	}
 	
+	.contactPage h2{
+		width: 90%;
+		font-size: 18px;
+		text-align: center;
+		margin:0 auto;
+		font-family: 'Segoe UI', sans-serif;	
+	}
+	
 	
 	.program{
 		display: flex;
