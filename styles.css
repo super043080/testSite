@@ -485,7 +485,7 @@ input[type=submit]:hover {
 		flex-flow: column wrap;
 		width: 100%;
 		padding-top: 50px;
-		font-family: 'acumin-pro-extra-condensed', sans-serif;
+		font-family: 'Segoe UI', sans-serif;
 		font-weight:500;
 		margin:0 auto;
 	
@@ -495,7 +495,7 @@ input[type=submit]:hover {
 		width: 80%;
 		font-size: 16px;		
 		padding:0 100px;
-		font-family: 'arial', sans-serif;	
+		
 	}
 
 	.program ul{
@@ -505,7 +505,7 @@ input[type=submit]:hover {
 
 	.program section {
 		width: 70%;
-		text-align: justify;
+		text-align: left;
 		font-size: 20px;    
 		padding-left: 20vw;
 	}
