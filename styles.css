@@ -450,7 +450,7 @@ input[type=submit]:hover {
 
 	.main h2{
 		width: 50%;
-		font-size: 17px;
+		font-size: 18px;
 		text-align: left;
 		margin:0 auto;
 		font-family: 'Segoe UI', sans-serif;	
@@ -529,21 +529,21 @@ input[type=submit]:hover {
 	
 	.profile h2{
 		width: 100%;
-		font-size: 16px;		
+		font-size: 20px;		
 		
 		
 	}
 	
 	
 	.profile ul{
-		font-size: 20px;
+		font-size: 18px;
 		padding:0 25vw;
 	}
 
 	.profile section {
 		width: 50%;
 		text-align: left;
-		font-size: 20px;    
+		font-size: 18px;    
 		
 	}
 	
