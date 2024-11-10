@@ -9,15 +9,22 @@
             margin: 20px auto;
             font-family: Arial, sans-serif;
             text-align: center;
+            box-sizing: border-box;
         }
 
         canvas {
             border: 1px solid #ccc;
             margin: 10px auto;
+            max-width: 100%;
+            height: auto;
         }
 
         .controls {
             margin: 20px 0;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
         }
 
         button {
@@ -27,7 +34,8 @@
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            margin: 0 10px;
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
         }
 
         button:disabled {
@@ -42,6 +50,7 @@
             margin: 10px 0;
             border-radius: 5px;
             text-align: left;
+            overflow-x: auto;
         }
 
         .step-display {
@@ -89,27 +98,15 @@
             line-height: 1.6;
         }
 
-        #recordingStatus {
-            color: red;
-            font-weight: bold;
-            margin: 10px 0;
-        }
+        @media (max-width: 600px) {
+            .controls button {
+                flex: 1 1 auto;
+                min-width: 120px;
+            }
 
-        #downloadLink {
-            margin: 10px 0;
-        }
-
-        #downloadLink a {
-            color: #007bff;
-            text-decoration: none;
-            padding: 5px 10px;
-            border: 1px solid #007bff;
-            border-radius: 5px;
-        }
-
-        #downloadLink a:hover {
-            background: #007bff;
-            color: white;
+            canvas {
+                height: 200px;
+            }
         }
     </style>
 </head>
@@ -128,11 +125,7 @@
             <button id="resumeBtn" onclick="resumePresentation()" disabled>Resume</button>
             <button id="resetBtn" onclick="resetPresentation()">Reset</button>
             <button id="nextBtn" onclick="manualNextStep()">Next Step</button>
-            <button id="recordBtn" onclick="startRecording()">Start Recording</button>
-            <button id="stopRecordBtn" onclick="stopRecording()" disabled>Stop Recording</button>
         </div>
-        <div id="recordingStatus" style="display: none;">Recording in progress...</div>
-        <div id="downloadLink"></div>
         <div class="step-display" id="currentStep"></div>
         <div class="formula" id="calculation"></div>
     </div>
@@ -147,11 +140,6 @@
         let currentUtterance = null;
         let currentWordIndex = 0;
         let lastPausedWordIndex = 0;
-        let mediaRecorder;
-        let recordedChunks = [];
-        let canvasStream;
-        let audioStream;
-        let combinedStream;
 
         const steps = [
             {
@@ -201,90 +189,6 @@
         ];
 
         document.getElementById('problemStatement').innerHTML = createWordSpans(steps[0].text);
-
-        async function startRecording() {
-            try {
-                // Get canvas stream
-                canvasStream = canvas.captureStream(30); // 30 FPS
-
-                // Get audio stream from the system audio
-                audioStream = await navigator.mediaDevices.getUserMedia({
-                    audio: {
-                        mandatory: {
-                            chromeMediaSource: 'desktop'
-                        }
-                    },
-                    video: false
-                });
-
-                // Combine both streams
-                const audioTracks = audioStream.getAudioTracks();
-                const videoTracks = canvasStream.getVideoTracks();
-                const tracks = [...videoTracks, ...audioTracks];
-                combinedStream = new MediaStream(tracks);
-
-                // Setup MediaRecorder
-                mediaRecorder = new MediaRecorder(combinedStream, {
-                    mimeType: 'video/webm;codecs=vp9'
-                });
-
-                mediaRecorder.ondataavailable = handleDataAvailable;
-                mediaRecorder.onstop = handleStop;
-
-                // Start recording
-                recordedChunks = [];
-                mediaRecorder.start();
-
-                // Update UI
-                document.getElementById('recordBtn').disabled = true;
-                document.getElementById('stopRecordBtn').disabled = false;
-                document.getElementById('recordingStatus').style.display = 'block';
-
-                // Start the presentation automatically
-                startPresentation();
-
-            } catch (error) {
-                console.error('Error starting recording:', error);
-                alert('Error starting recording. Make sure you have granted necessary permissions.');
-            }
-        }
-
-        function handleDataAvailable(event) {
-            if (event.data.size > 0) {
-                recordedChunks.push(event.data);
-            }
-        }
-
-        function handleStop() {
-            const blob = new Blob(recordedChunks, {
-                type: 'video/webm'
-            });
-
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            document.getElementById('downloadLink').appendChild(a);
-            a.style.display = 'block';
-            a.href = url;
-            a.download = 'presentation-recording.webm';
-            a.textContent = 'Download Recording';
-
-            // Clean up streams
-            if (canvasStream) {
-                canvasStream.getTracks().forEach(track => track.stop());
-            }
-            if (audioStream) {
-                audioStream.getTracks().forEach(track => track.stop());
-            }
-        }
-
-        function stopRecording() {
-            if (mediaRecorder && mediaRecorder.state !== 'inactive') {
-                mediaRecorder.stop();
-                document.getElementById('recordBtn').disabled = false;
-                document.getElementById('stopRecordBtn').disabled = true;
-                document.getElementById('recordingStatus').style.display = 'none';
-            }
-        }
 
         function createWordSpans(text) {
             const words = text.split(' ');
@@ -369,9 +273,6 @@
                     } else {
                         isPlaying = false;
                         updateButtons();
-                        if (mediaRecorder && mediaRecorder.state === 'recording') {
-                            stopRecording();
-                        }
                     }
                 }
             }
@@ -431,9 +332,6 @@
         }
 
         function resetPresentation() {
-            if (mediaRecorder && mediaRecorder.state === 'recording') {
-                stopRecording();
-            }
             pausePresentation();
             currentStepIndex = 0;
             currentWordIndex = 0;
