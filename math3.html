@@ -83,7 +83,8 @@
             transition: color 0.2s ease;
         }
 
-        .caption-word.active {
+        .caption-word.active,
+        .caption-word.spoken {
             color: #ff0000;
         }
 
@@ -97,34 +98,14 @@
             line-height: 1.6;
         }
 
-        @media (max-width: 1000px) {
+        @media (max-width: 600px) {
             .controls button {
                 flex: 1 1 auto;
                 min-width: 120px;
             }
-			
-			button {
-				font-size: 24px;
-			}
-			
-			.problem-statement {
-                font-size: 30px;			
-            }
-			
-			.caption-word  {
-                font-size: 30px;			
-            }			
-			
-			.formula  {
-                font-size: 30px;			
-            }
-			.container h2{
-				font-size: 36px;
-				
-			}
 
             canvas {
-                height: 600px;				
+                height: 200px;
             }
         }
     </style>
@@ -231,8 +212,12 @@
         function highlightWord(index) {
             const words = document.querySelectorAll('.caption-word');
             words.forEach(word => {
-                if (parseInt(word.dataset.index) === index) {
+                const wordIndex = parseInt(word.dataset.index);
+                if (wordIndex === index) {
                     word.classList.add('active');
+                }
+                if (wordIndex <= index) {
+                    word.classList.add('spoken');
                 }
             });
         }
@@ -247,7 +232,6 @@
 
                 currentWordIndex = startFromWord;
 
-                // Highlight all words up to the starting point
                 for (let i = 0; i < startFromWord; i++) {
                     highlightWord(i);
                 }
@@ -283,83 +267,61 @@
                 const step = steps[currentStepIndex];
                 displayStep(step);
                 await speak(step.text);
-
-                if (!isPaused) {
-                    currentStepIndex++;
-                    lastPausedWordIndex = 0;
-                    if (currentStepIndex < steps.length) {
-                        setTimeout(nextStep, 1000);
-                    } else {
-                        isPlaying = false;
-                        updateButtons();
-                    }
+                currentStepIndex++;
+                if (currentStepIndex < steps.length) {
+                    await nextStep();
+                } else {
+                    isPlaying = false;
+                    updateButtons();
                 }
             }
         }
 
-        function resumePresentation() {
-            if (isPaused) {
-                isPaused = false;
+        async function startPresentation() {
+            if (!isPlaying) {
                 isPlaying = true;
-                const currentStep = steps[currentStepIndex];
-
-                speak(currentStep.text, lastPausedWordIndex).then(() => {
-                    if (!isPaused) {
-                        currentStepIndex++;
-                        lastPausedWordIndex = 0;
-                        if (currentStepIndex < steps.length) {
-                            nextStep();
-                        } else {
-                            isPlaying = false;
-                            updateButtons();
-                        }
-                    }
-                });
-                updateButtons();
-            }
-        }
-
-        function manualNextStep() {
-            if (currentStepIndex < steps.length) {
-                displayStep(steps[currentStepIndex]);
-                currentStepIndex++;
-                updateProgress();
-            }
-        }
-
-        function startPresentation() {
-            isPaused = false;
-            isPlaying = true;
-            updateButtons();
-
-            if (currentStepIndex === 0 || currentStepIndex >= steps.length) {
+                isPaused = false;
                 currentStepIndex = 0;
                 lastPausedWordIndex = 0;
-                updateProgress();
+                updateButtons();
+                await nextStep();
             }
-            nextStep();
         }
 
         function pausePresentation() {
             isPaused = true;
             isPlaying = false;
-            if (currentUtterance) {
-                synth.cancel();
-                lastPausedWordIndex = currentWordIndex;
-            }
+            synth.cancel();
             updateButtons();
         }
 
+        function resumePresentation() {
+            if (isPaused) {
+                isPlaying = true;
+                isPaused = false;
+                updateButtons();
+                speak(steps[currentStepIndex - 1].text, lastPausedWordIndex).then(async () => {
+                    await nextStep();
+                });
+            }
+        }
+
         function resetPresentation() {
-            pausePresentation();
             currentStepIndex = 0;
-            currentWordIndex = 0;
-            lastPausedWordIndex = 0;
-            document.getElementById('problemStatement').innerHTML = createWordSpans(steps[0].text);
-            document.getElementById('currentStep').textContent = '';
-            document.getElementById('calculation').innerHTML = '';
-            updateProgress();
+            isPlaying = false;
+            isPaused = false;
+            synth.cancel();
             updateButtons();
+            displayStep(steps[0]);
+            document.getElementById('progressBar').style.width = '0%';
+        }
+
+        function manualNextStep() {
+            if (!isPlaying && currentStepIndex < steps.length) {
+                displayStep(steps[currentStepIndex]);
+                currentStepIndex++;
+                updateProgress();
+            }
         }
 
         function drawRoad() {
@@ -408,7 +370,7 @@
         }
 
         drawRoad();
-        updateButtons();
+        displayStep(steps[0]);
     </script>
 </body>
 
