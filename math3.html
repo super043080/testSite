@@ -9,22 +9,15 @@
             margin: 20px auto;
             font-family: Arial, sans-serif;
             text-align: center;
-            box-sizing: border-box;
         }
 
         canvas {
             border: 1px solid #ccc;
             margin: 10px auto;
-            max-width: 100%;
-            height: auto;
         }
 
         .controls {
             margin: 20px 0;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 10px;
         }
 
         button {
@@ -34,8 +27,7 @@
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            touch-action: manipulation;
-            -webkit-tap-highlight-color: transparent;
+            margin: 0 10px;
         }
 
         button:disabled {
@@ -50,7 +42,6 @@
             margin: 10px 0;
             border-radius: 5px;
             text-align: left;
-            overflow-x: auto;
         }
 
         .step-display {
@@ -98,15 +89,27 @@
             line-height: 1.6;
         }
 
-        @media (max-width: 600px) {
-            .controls button {
-                flex: 1 1 auto;
-                min-width: 120px;
-            }
+        #recordingStatus {
+            color: red;
+            font-weight: bold;
+            margin: 10px 0;
+        }
 
-            canvas {
-                height: 200px;
-            }
+        #downloadLink {
+            margin: 10px 0;
+        }
+
+        #downloadLink a {
+            color: #007bff;
+            text-decoration: none;
+            padding: 5px 10px;
+            border: 1px solid #007bff;
+            border-radius: 5px;
+        }
+
+        #downloadLink a:hover {
+            background: #007bff;
+            color: white;
         }
     </style>
 </head>
@@ -125,7 +128,11 @@
             <button id="resumeBtn" onclick="resumePresentation()" disabled>Resume</button>
             <button id="resetBtn" onclick="resetPresentation()">Reset</button>
             <button id="nextBtn" onclick="manualNextStep()">Next Step</button>
+            <button id="recordBtn" onclick="startRecording()">Start Recording</button>
+            <button id="stopRecordBtn" onclick="stopRecording()" disabled>Stop Recording</button>
         </div>
+        <div id="recordingStatus" style="display: none;">Recording in progress...</div>
+        <div id="downloadLink"></div>
         <div class="step-display" id="currentStep"></div>
         <div class="formula" id="calculation"></div>
     </div>
@@ -140,11 +147,11 @@
         let currentUtterance = null;
         let currentWordIndex = 0;
         let lastPausedWordIndex = 0;
-        let wordTimings = [];
-        let animationTimer = null;
-
-        // Detect mobile device
-        const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+        let mediaRecorder;
+        let recordedChunks = [];
+        let canvasStream;
+        let audioStream;
+        let combinedStream;
 
         const steps = [
             {
@@ -193,30 +200,97 @@
             }
         ];
 
-        // Initialize the problem statement
         document.getElementById('problemStatement').innerHTML = createWordSpans(steps[0].text);
+
+        async function startRecording() {
+            try {
+                // Get canvas stream
+                canvasStream = canvas.captureStream(30); // 30 FPS
+
+                // Get audio stream from the system audio
+                audioStream = await navigator.mediaDevices.getUserMedia({
+                    audio: {
+                        mandatory: {
+                            chromeMediaSource: 'desktop'
+                        }
+                    },
+                    video: false
+                });
+
+                // Combine both streams
+                const audioTracks = audioStream.getAudioTracks();
+                const videoTracks = canvasStream.getVideoTracks();
+                const tracks = [...videoTracks, ...audioTracks];
+                combinedStream = new MediaStream(tracks);
+
+                // Setup MediaRecorder
+                mediaRecorder = new MediaRecorder(combinedStream, {
+                    mimeType: 'video/webm;codecs=vp9'
+                });
+
+                mediaRecorder.ondataavailable = handleDataAvailable;
+                mediaRecorder.onstop = handleStop;
+
+                // Start recording
+                recordedChunks = [];
+                mediaRecorder.start();
+
+                // Update UI
+                document.getElementById('recordBtn').disabled = true;
+                document.getElementById('stopRecordBtn').disabled = false;
+                document.getElementById('recordingStatus').style.display = 'block';
+
+                // Start the presentation automatically
+                startPresentation();
+
+            } catch (error) {
+                console.error('Error starting recording:', error);
+                alert('Error starting recording. Make sure you have granted necessary permissions.');
+            }
+        }
+
+        function handleDataAvailable(event) {
+            if (event.data.size > 0) {
+                recordedChunks.push(event.data);
+            }
+        }
+
+        function handleStop() {
+            const blob = new Blob(recordedChunks, {
+                type: 'video/webm'
+            });
+
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            document.getElementById('downloadLink').appendChild(a);
+            a.style.display = 'block';
+            a.href = url;
+            a.download = 'presentation-recording.webm';
+            a.textContent = 'Download Recording';
+
+            // Clean up streams
+            if (canvasStream) {
+                canvasStream.getTracks().forEach(track => track.stop());
+            }
+            if (audioStream) {
+                audioStream.getTracks().forEach(track => track.stop());
+            }
+        }
+
+        function stopRecording() {
+            if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+                mediaRecorder.stop();
+                document.getElementById('recordBtn').disabled = false;
+                document.getElementById('stopRecordBtn').disabled = true;
+                document.getElementById('recordingStatus').style.display = 'none';
+            }
+        }
 
         function createWordSpans(text) {
             const words = text.split(' ');
             return words.map((word, index) =>
                 `<span class="caption-word" data-index="${index}">${word}</span>`
             ).join(' ');
-        }
-
-        // Calculate approximate word timings based on word length
-        function calculateWordTimings(text) {
-            const words = text.split(' ');
-            let currentTime = 0;
-            return words.map(word => {
-                // Estimate 200ms per word plus 50ms per character
-                const duration = 200 + (word.length * 50);
-                const timing = {
-                    start: currentTime,
-                    end: currentTime + duration
-                };
-                currentTime += duration;
-                return timing;
-            });
         }
 
         function updateProgress() {
@@ -231,48 +305,6 @@
             document.getElementById('nextBtn').disabled = isPlaying;
         }
 
-        // Manual word highlighting for mobile
-        function animateWords(text) {
-            const words = text.split(' ');
-            wordTimings = calculateWordTimings(text);
-            let startTime = Date.now();
-
-            function updateHighlight() {
-                if (isPaused) return;
-
-                const currentTime = Date.now() - startTime;
-                const currentWordIndex = wordTimings.findIndex(timing =>
-                    currentTime >= timing.start && currentTime <= timing.end
-                );
-
-                const words = document.querySelectorAll('.caption-word');
-                words.forEach(word => word.classList.remove('active'));
-
-                if (currentWordIndex !== -1) {
-                    if (words[currentWordIndex]) {
-                        words[currentWordIndex].classList.add('active');
-                    }
-
-                    if (currentWordIndex < words.length) {
-                        animationTimer = requestAnimationFrame(updateHighlight);
-                    } else {
-                        // Animation complete
-                        if (currentStepIndex < steps.length - 1) {
-                            currentStepIndex++;
-                            setTimeout(nextStep, 1000);
-                        } else {
-                            isPlaying = false;
-                            updateButtons();
-                        }
-                    }
-                } else if (currentTime < wordTimings[wordTimings.length - 1].end) {
-                    animationTimer = requestAnimationFrame(updateHighlight);
-                }
-            }
-
-            animationTimer = requestAnimationFrame(updateHighlight);
-        }
-
         function highlightWord(index) {
             const words = document.querySelectorAll('.caption-word');
             words.forEach(word => {
@@ -282,41 +314,33 @@
             });
         }
 
-        async function speak(text, startFromWord = 0) {
+        function speak(text, startFromWord = 0) {
             return new Promise((resolve) => {
-                if (isMobile) {
-                    // Use manual timing-based animation for mobile
-                    animateWords(text);
-                    // Estimate total duration based on text length
-                    setTimeout(resolve, text.length * 100);
-                } else {
-                    // Desktop behavior
-                    const words = text.split(' ');
-                    const remainingText = words.slice(startFromWord).join(' ');
-                    currentUtterance = new SpeechSynthesisUtterance(remainingText);
-                    currentUtterance.rate = 0.9;
-                    currentUtterance.pitch = 1;
+                const words = text.split(' ');
+                const remainingText = words.slice(startFromWord).join(' ');
+                currentUtterance = new SpeechSynthesisUtterance(remainingText);
+                currentUtterance.rate = 0.9;
+                currentUtterance.pitch = 1;
 
-                    currentWordIndex = startFromWord;
+                currentWordIndex = startFromWord;
 
-                    // Highlight all words up to the starting point
-                    for (let i = 0; i < startFromWord; i++) {
-                        highlightWord(i);
-                    }
-
-                    currentUtterance.onboundary = (event) => {
-                        if (event.name === 'word') {
-                            highlightWord(currentWordIndex);
-                            currentWordIndex++;
-                            lastPausedWordIndex = currentWordIndex;
-                        }
-                    };
-
-                    currentUtterance.onend = resolve;
-                    currentUtterance.onerror = resolve;
-
-                    synth.speak(currentUtterance);
+                // Highlight all words up to the starting point
+                for (let i = 0; i < startFromWord; i++) {
+                    highlightWord(i);
                 }
+
+                currentUtterance.onboundary = (event) => {
+                    if (event.name === 'word') {
+                        highlightWord(currentWordIndex);
+                        currentWordIndex++;
+                        lastPausedWordIndex = currentWordIndex;
+                    }
+                };
+
+                currentUtterance.onend = resolve;
+                currentUtterance.onerror = resolve;
+
+                synth.speak(currentUtterance);
             });
         }
 
@@ -345,6 +369,9 @@
                     } else {
                         isPlaying = false;
                         updateButtons();
+                        if (mediaRecorder && mediaRecorder.state === 'recording') {
+                            stopRecording();
+                        }
                     }
                 }
             }
@@ -356,22 +383,18 @@
                 isPlaying = true;
                 const currentStep = steps[currentStepIndex];
 
-                if (isMobile) {
-                    animateWords(currentStep.text);
-                } else {
-                    speak(currentStep.text, lastPausedWordIndex).then(() => {
-                        if (!isPaused) {
-                            currentStepIndex++;
-                            lastPausedWordIndex = 0;
-                            if (currentStepIndex < steps.length) {
-                                nextStep();
-                            } else {
-                                isPlaying = false;
-                                updateButtons();
-                            }
+                speak(currentStep.text, lastPausedWordIndex).then(() => {
+                    if (!isPaused) {
+                        currentStepIndex++;
+                        lastPausedWordIndex = 0;
+                        if (currentStepIndex < steps.length) {
+                            nextStep();
+                        } else {
+                            isPlaying = false;
+                            updateButtons();
                         }
-                    });
-                }
+                    }
+                });
                 updateButtons();
             }
         }
@@ -400,11 +423,7 @@
         function pausePresentation() {
             isPaused = true;
             isPlaying = false;
-            if (isMobile) {
-                if (animationTimer) {
-                    cancelAnimationFrame(animationTimer);
-                }
-            } else if (currentUtterance) {
+            if (currentUtterance) {
                 synth.cancel();
                 lastPausedWordIndex = currentWordIndex;
             }
@@ -412,6 +431,9 @@
         }
 
         function resetPresentation() {
+            if (mediaRecorder && mediaRecorder.state === 'recording') {
+                stopRecording();
+            }
             pausePresentation();
             currentStepIndex = 0;
             currentWordIndex = 0;
@@ -421,15 +443,10 @@
             document.getElementById('calculation').innerHTML = '';
             updateProgress();
             updateButtons();
-            drawRoad();
         }
 
         function drawRoad() {
-            // Scale canvas for mobile
-            const scale = Math.min(1, canvas.width / 700);
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.save();
-            ctx.scale(scale, scale);
 
             ctx.fillStyle = '#333';
             ctx.font = '16px Arial';
