@@ -265,66 +265,78 @@
         }
 
         function speak(text, startFromWord = 0) {
-            return new Promise((resolve) => {
-                synth.cancel();
+			return new Promise((resolve) => {
+				// Cancel any ongoing speech
+				synth.cancel();
 
-                const words = text.split(' ');
-                const remainingText = words.slice(startFromWord).join(' ');
-                currentUtterance = new SpeechSynthesisUtterance(remainingText);
+				const words = text.split(' ');
+				const remainingText = words.slice(startFromWord).join(' ');
+				currentUtterance = new SpeechSynthesisUtterance(remainingText);
 
-                const englishVoice = voices.find(voice => voice.lang.includes('en'));
-                if (englishVoice) {
-                    currentUtterance.voice = englishVoice;
-                }
+				// Select an English voice
+				const englishVoice = voices.find(voice => voice.lang.includes('en'));
+				if (englishVoice) {
+					currentUtterance.voice = englishVoice;
+				}
 
-                currentUtterance.rate = isMobile ? 0.8 : 0.9;
-                currentUtterance.pitch = 1;
+				currentUtterance.rate = 0.8; // Consistent rate for all devices
+				currentUtterance.pitch = 1;
 
-                currentWordIndex = startFromWord;
+				// Reset word highlighting
+				document.querySelectorAll('.caption-word').forEach(word => {
+					word.classList.remove('active', 'spoken');
+				});
 
-                for (let i = 0; i < startFromWord; i++) {
-                    highlightWord(i);
-                }
+				// Pre-highlight previous words
+				for (let i = 0; i < startFromWord; i++) {
+					highlightWord(i);
+				}
 
-                if (isMobile) {
-                    const wordDuration = (remainingText.length / words.length) * 100;
-                    let wordTimer = startFromWord;
+				currentWordIndex = startFromWord;
 
-                    const intervalId = setInterval(() => {
-                        if (!isPaused && wordTimer < words.length) {
-                            highlightWord(wordTimer);
-                            wordTimer++;
-                            lastPausedWordIndex = wordTimer;
-                        }
-                    }, wordDuration);
+				// Estimated time per word (in milliseconds)
+				const timePerWord = 400; // Adjust this value as needed
+				let wordTimer = null;
 
-                    currentUtterance.onend = () => {
-                        clearInterval(intervalId);
-                        resolve();
-                    };
+				function startWordTimer() {
+					let currentWord = startFromWord;
+					wordTimer = setInterval(() => {
+						if (!isPaused && currentWord < words.length) {
+							highlightWord(currentWord);
+							currentWord++;
+							lastPausedWordIndex = currentWord;
+						}
+					}, timePerWord);
+				}
 
-                    currentUtterance.onerror = () => {
-                        clearInterval(intervalId);
-                        resolve();
-                    };
-                } else {
-                    currentUtterance.onboundary = (event) => {
-                        if (event.name === 'word') {
-                            highlightWord(currentWordIndex);
-                            currentWordIndex++;
-                            lastPausedWordIndex = currentWordIndex;
-                        }
-                    };
+				currentUtterance.onstart = () => {
+					startWordTimer();
+				};
 
-                    currentUtterance.onend = resolve;
-                    currentUtterance.onerror = resolve;
-                }
+				currentUtterance.onpause = () => {
+					if (wordTimer) clearInterval(wordTimer);
+				};
 
-                setTimeout(() => {
-                    synth.speak(currentUtterance);
-                }, 100);
-            });
-        }
+				currentUtterance.onresume = () => {
+					startWordTimer();
+				};
+
+				currentUtterance.onend = () => {
+					if (wordTimer) clearInterval(wordTimer);
+					resolve();
+				};
+
+				currentUtterance.onerror = () => {
+					if (wordTimer) clearInterval(wordTimer);
+					resolve();
+				};
+
+				// Add a slight delay before starting speech
+				setTimeout(() => {
+					synth.speak(currentUtterance);
+				}, 100);
+			});
+		}
 
         function displayStep(step) {
             if (currentStepIndex === 0) {
@@ -364,37 +376,62 @@
         }
 
         function pausePresentation() {
-            isPaused = true;
-            isPlaying = false;
-            if (synth.speaking) {
-                synth.pause();
-            }
-            updateButtons();
-        }
+			isPaused = true;
+			isPlaying = false;
+			if (synth.speaking) {
+				synth.pause();
+				// Force cancel if pause doesn't work (for mobile)
+				setTimeout(() => {
+					if (synth.speaking) {
+						synth.cancel();
+					}
+				}, 500);
+			}
+			updateButtons();
+		}
 
         async function resumePresentation() {
-            if (isPaused) {
-                isPlaying = true;
-                isPaused = false;
-                updateButtons();
-                if (synth.speaking) {
-                    synth.resume();
-                } else {
-                    await speak(steps[currentStepIndex - 1].text, lastPausedWordIndex);
-                    await nextStep();
-                }
-            }
-        }
+			if (isPaused) {
+				isPlaying = true;
+				isPaused = false;
+				updateButtons();
 
-        function resetPresentation() {
-            currentStepIndex = 0;
-            isPlaying = false;
-            isPaused = false;
-            synth.cancel();
-            updateButtons();
-            displayStep(steps[0]);
-            document.getElementById('progressBar').style.width = '0%';
-        }
+				// Always start from last paused word
+				if (currentStepIndex > 0) {
+					await speak(steps[currentStepIndex - 1].text, lastPausedWordIndex);
+					await nextStep();
+				}
+			}
+		}
+		
+		// Add this new function to handle speech synthesis cleanup
+		function cleanupSpeech() {
+			synth.cancel();
+			isPaused = false;
+			isPlaying = false;
+			updateButtons();
+		}
+
+        // Modify resetPresentation to use cleanupSpeech
+		function resetPresentation() {
+			currentStepIndex = 0;
+			lastPausedWordIndex = 0;
+			cleanupSpeech();
+			displayStep(steps[0]);
+			document.getElementById('progressBar').style.width = '0%';
+		}
+		
+		// Add event listeners for page visibility changes
+		document.addEventListener('visibilitychange', () => {
+			if (document.hidden) {
+				cleanupSpeech();
+			}
+		});
+
+		// Add event listener for before unload
+		window.addEventListener('beforeunload', () => {
+			cleanupSpeech();
+		});
 
         function manualNextStep() {
             if (!isPlaying && currentStepIndex < steps.length) {
