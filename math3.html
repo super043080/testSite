@@ -122,7 +122,6 @@
 
             .container h2 {
                 font-size: 36px;
-
             }
 
             canvas {
@@ -161,6 +160,28 @@
         let currentUtterance = null;
         let currentWordIndex = 0;
         let lastPausedWordIndex = 0;
+        let voices = [];
+
+        // Mobile device detection
+        const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
+        // Wait for voices to load
+        function initVoices() {
+            return new Promise((resolve) => {
+                voices = synth.getVoices();
+                if (voices.length > 0) {
+                    resolve();
+                } else {
+                    speechSynthesis.addEventListener('voiceschanged', () => {
+                        voices = synth.getVoices();
+                        resolve();
+                    });
+                }
+            });
+        }
+
+        // Initialize voices when page loads
+        window.addEventListener('load', initVoices);
 
         const steps = [
             {
@@ -245,10 +266,18 @@
 
         function speak(text, startFromWord = 0) {
             return new Promise((resolve) => {
+                synth.cancel();
+
                 const words = text.split(' ');
                 const remainingText = words.slice(startFromWord).join(' ');
                 currentUtterance = new SpeechSynthesisUtterance(remainingText);
-                currentUtterance.rate = 0.9;
+
+                const englishVoice = voices.find(voice => voice.lang.includes('en'));
+                if (englishVoice) {
+                    currentUtterance.voice = englishVoice;
+                }
+
+                currentUtterance.rate = isMobile ? 0.8 : 0.9;
                 currentUtterance.pitch = 1;
 
                 currentWordIndex = startFromWord;
@@ -257,18 +286,43 @@
                     highlightWord(i);
                 }
 
-                currentUtterance.onboundary = (event) => {
-                    if (event.name === 'word') {
-                        highlightWord(currentWordIndex);
-                        currentWordIndex++;
-                        lastPausedWordIndex = currentWordIndex;
-                    }
-                };
+                if (isMobile) {
+                    const wordDuration = (remainingText.length / words.length) * 100;
+                    let wordTimer = startFromWord;
 
-                currentUtterance.onend = resolve;
-                currentUtterance.onerror = resolve;
+                    const intervalId = setInterval(() => {
+                        if (!isPaused && wordTimer < words.length) {
+                            highlightWord(wordTimer);
+                            wordTimer++;
+                            lastPausedWordIndex = wordTimer;
+                        }
+                    }, wordDuration);
 
-                synth.speak(currentUtterance);
+                    currentUtterance.onend = () => {
+                        clearInterval(intervalId);
+                        resolve();
+                    };
+
+                    currentUtterance.onerror = () => {
+                        clearInterval(intervalId);
+                        resolve();
+                    };
+                } else {
+                    currentUtterance.onboundary = (event) => {
+                        if (event.name === 'word') {
+                            highlightWord(currentWordIndex);
+                            currentWordIndex++;
+                            lastPausedWordIndex = currentWordIndex;
+                        }
+                    };
+
+                    currentUtterance.onend = resolve;
+                    currentUtterance.onerror = resolve;
+                }
+
+                setTimeout(() => {
+                    synth.speak(currentUtterance);
+                }, 100);
             });
         }
 
@@ -312,18 +366,23 @@
         function pausePresentation() {
             isPaused = true;
             isPlaying = false;
-            synth.cancel();
+            if (synth.speaking) {
+                synth.pause();
+            }
             updateButtons();
         }
 
-        function resumePresentation() {
+        async function resumePresentation() {
             if (isPaused) {
                 isPlaying = true;
                 isPaused = false;
                 updateButtons();
-                speak(steps[currentStepIndex - 1].text, lastPausedWordIndex).then(async () => {
+                if (synth.speaking) {
+                    synth.resume();
+                } else {
+                    await speak(steps[currentStepIndex - 1].text, lastPausedWordIndex);
                     await nextStep();
-                });
+                }
             }
         }
 
