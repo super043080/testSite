@@ -305,9 +305,15 @@
                 currentStepIndex = 0;
                 lastPausedWordIndex = 0;
                 updateButtons();
+				await delay(2000);
                 await nextStep();
             }
         }
+		
+		// Helper function to create a delay
+		function delay(ms) {
+			return new Promise(resolve => setTimeout(resolve, ms));
+		}
 
         function pausePresentation() {
             isPaused = true;
