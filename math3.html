@@ -164,7 +164,7 @@
 
         const steps = [
             {
-                text: "A cyclist is planning a two-stage journey. In the first stage, they need to cover 40 kilometers, and in the second stage, they need to cover 20 kilometers. If they maintain a speed of p kilometers per hour in the first stage and q kilometers per hour in the second stage, what is their average speed for the entire journey?",
+                text: "A cyclist is planning a two-stage journey. In the first stage, they need to cover 40 kilometers, and in the second stage, they need to cover 20 kilometers. If they maintain a speed of p kilometers per hour in the first stage, and q kilometers per hour in the second stage, what is their average speed for the entire journey?",
                 formula: "Problem Statement"
             },
             {
@@ -248,7 +248,18 @@
                 const words = text.split(' ');
                 const remainingText = words.slice(startFromWord).join(' ');
                 currentUtterance = new SpeechSynthesisUtterance(remainingText);
-                currentUtterance.rate = 0.9;
+				
+				// Set voice to the second available voice
+				const synth = window.speechSynthesis;
+				const voices = synth.getVoices();
+				
+				// Wait for voices to be loaded
+				if (voices.length > 1) {
+					currentUtterance.voice = voices[1]; // Set to the second voice
+				}
+				
+				
+                currentUtterance.rate = 0.8;
                 currentUtterance.pitch = 1;
 
                 currentWordIndex = startFromWord;
