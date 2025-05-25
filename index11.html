@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flow Data Table</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #a0dbf7;
+        }
+
+        .container {
+            max-width: 1500px;
+            margin: 0 auto;
+            background-color: rgb(255, 255, 255);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            text-align: center;
+
+        }
+
+        /* Two-column layout */
+        .two-column-layout {
+            display: flex;
+            gap: 20px;
+
+        }
+
+        .left-column {
+            flex: 0 0 350px;
+
+        }
+
+        .right-column {
+            flex: 1;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+
+        }
+
+        .data-table th,
+        .data-table td {
+            border: 1px solid #ddd;
+            padding: 6px;
+            text-align: center;
+        }
+
+        .data-table th {
+            background-color: #f2f2f2;
+            position: sticky;
+            top: 0;
+            cursor: pointer;
+        }
+
+        .data-table th:hover {
+            background-color: #e6e6e6;
+        }
+
+        .data-table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .data-table tr:hover {
+            background-color: #f0f0f0;
+        }
+
+        .table-container {
+            max-height: 750px;
+            overflow-y: auto;
+            margin-top: 0px;
+        }
+
+        .control-panel {
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: #f0f8ff;
+            border-radius: 8px;
+        }
+
+        button,
+        select {
+            padding: 8px 12px;
+            margin-right: 10px;
+            border: none;
+            border-radius: 4px;
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .search-box {
+            padding: 8px;
+            margin-bottom: 10px;
+            width: 100%;
+            box-sizing: border-box;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .file-input {
+            padding: 8px;
+            margin-right: 10px;
+            width: 200px;
+            box-sizing: border-box;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .sort-arrow {
+            display: inline-block;
+            width: 0;
+            height: 0;
+            margin-left: 5px;
+            vertical-align: middle;
+        }
+
+        .sort-arrow.asc {
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            border-bottom: 5px solid black;
+        }
+
+        .sort-arrow.desc {
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            border-top: 5px solid black;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .pagination button {
+            margin: 0 5px;
+        }
+
+        .status {
+            text-align: center;
+            margin-top: 10px;
+            font-style: italic;
+            color: #666;
+        }
+
+        .file-control {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .filter-group {
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+
+        .filter-group label {
+            margin-right: 5px;
+        }
+
+        .filter-group input[type="number"] {
+            width: 100px;
+        }
+
+        /* Arrow coloring for PctChg */
+        .pctchg-up {
+            color: #27ae60;
+            font-weight: bold;
+        }
+
+        .pctchg-down {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+
+        .pctchg-zero {
+            color: #666;
+        }
+
+        /* New styles for filter sections */
+        .filter-section {
+            margin-bottom: 15px;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+
+        .filter-section h4 {
+            margin-top: 0;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .filter-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 5px;
+        }
+
+        /* Make the control panel compact in left column */
+        .left-column .control-panel {
+            padding: 10px;
+        }
+
+        .left-column h3 {
+            margin-top: 10px;
+            margin-bottom: 8px;
+            font-size: 16px;
+        }
+
+        .left-column .filter-section {
+            padding: 8px;
+        }
+
+        .left-column .filter-section h4 {
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        /* File button group */
+        .file-buttons {
+            display: flex;
+            gap: 5px;
+            margin-top: 5px;
+        }
+
+        .file-buttons input[type="button"] {
+            padding: 5px 8px;
+            background-color: #ddd;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        .file-buttons input[type="button"]:hover {
+            background-color: #ccc;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Flow Data Table</h1>
+
+        </div>
+
+        <!-- New two-column layout -->
+        <div class="two-column-layout">
+            <!-- Left Column: Control Panel -->
+            <div class="left-column">
+                <div class="control-panel">
+                    <h3>Data Import</h3>
+                    <div class="file-control">
+                        <label for="fileName">File Name: </label>
+                        <input type="text" id="fileName" class="file-input" value="hkFlows.csv">
+                    </div>
+                    <div style="display: flex; gap: 5px; margin-bottom: 10px;">
+                        <button id="loadData">Load/Refresh</button>
+                        <button id="loadSampleData">Load Sample</button>
+                    </div>
+                    <div class="file-buttons">
+                        <input type="button" value="hkV1"
+                            onclick="document.getElementById('fileName').value='hkFlows.csv'">
+                        <input type="button" value="hkV2"
+                            onclick="document.getElementById('fileName').value='hkFlowsExt.csv'">
+                        <input type="button" value="hkV3"
+                            onclick="document.getElementById('fileName').value='hkFlowsExt1.csv'">
+                    </div>
+
+
+                    <div class="file-buttons">
+                        <input type="button" value="usV1"
+                            onclick="document.getElementById('fileName').value='usFlows.csv'">
+                        <input type="button" value="usV2"
+                            onclick="document.getElementById('fileName').value='usFlowsExt.csv'">
+                        <input type="button" value="usV3"
+                            onclick="document.getElementById('fileName').value='usFlowsExt1.csv'">
+                    </div>
+
+
+                    <div style="margin-top: 10px;">
+                        <button id="exportNameBtn">Export HK</button>
+                        <button id="exportNameBtnUSA">Export USA</button>
+                    </div>
+
+                    <h3>Table Controls</h3>
+                    <input type="text" id="searchBox" class="search-box" placeholder="Search in any column...">
+
+                    <div class="filter-section">
+                        <h4>Flow Filters</h4>
+                        <div class="filter-row">
+                            <label for="minFlow">Total Flow &gt; </label>
+                            <input type="number" id="minFlow" placeholder="Min" style="width:80px;" step="any">
+                            <label for="maxFlow">&lt; </label>
+                            <input type="number" id="maxFlow" placeholder="Max" style="width:80px;" step="any">
+                        </div>
+
+                        <div class="filter-row">
+                            <label for="minSuperFlow">Super Flow &gt; </label>
+                            <input type="number" id="minSuperFlow" placeholder="Min" style="width:80px;" step="any">
+                            <label for="maxSuperFlow">&lt; </label>
+                            <input type="number" id="maxSuperFlow" placeholder="Max" style="width:80px;" step="any">
+                        </div>
+
+                        <div class="filter-row">
+                            <label for="minBigFlow">Big Flow &gt; </label>
+                            <input type="number" id="minBigFlow" placeholder="Min" style="width:80px;" step="any">
+                            <label for="maxBigFlow">&lt; </label>
+                            <input type="number" id="maxBigFlow" placeholder="Max" style="width:80px;" step="any">
+                        </div>
+
+                        <div class="filter-row">
+                            <label for="minMidFlow">Mid Flow &gt; </label>
+                            <input type="number" id="minMidFlow" placeholder="Min" style="width:80px;" step="any">
+                            <label for="maxMidFlow">&lt; </label>
+                            <input type="number" id="maxMidFlow" placeholder="Max" style="width:80px;" step="any">
+                        </div>
+
+                        <div class="filter-row">
+                            <label for="minSmlFlow">Small Flow &gt; </label>
+                            <input type="number" id="minSmlFlow" placeholder="Min" style="width:80px;" step="any">
+                            <label for="maxSmlFlow">&lt; </label>
+                            <input type="number" id="maxSmlFlow" placeholder="Max" style="width:80px;" step="any">
+                        </div>
+                    </div>
+
+                    <div class="filter-section">
+                        <h4>Other Filters</h4>
+                        <div class="filter-row">
+                            <label for="minPctChg">PctChg &gt; </label>
+                            <input type="number" id="minPctChg" placeholder="Min" style="width:80px;" step="any">
+                            <label for="maxPctChg">&lt; </label>
+                            <input type="number" id="maxPctChg" placeholder="Max" style="width:80px;" step="any">
+                        </div>
+
+                        <div class="filter-row">
+                            <label for="minMktCap">MktCap &gt; </label>
+                            <input type="number" id="minMktCap" placeholder="Min" style="width:80px;" step="any">
+                            <label for="maxMktCap">&lt; </label>
+                            <input type="number" id="maxMktCap" placeholder="Max" style="width:80px;" step="any">
+                        </div>
+                    </div>
+
+                    <div class="filter-section">
+                        <h4>Name Filter</h4>
+                        <div class="filter-row">
+                            <label for="nameFilterFile"><b>Filter by Name List (CSV):</b></label>
+                            <input type="file" id="nameFilterFile" accept=".csv">
+                        </div>
+                        <div style="display: flex; gap: 5px; margin-top: 5px;">
+                            <button id="applyNameFilterBtn" type="button">Apply Name Filter</button>
+                            <button id="clearNameFilterBtn" type="button">Clear Filter</button>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label for="rowsPerPage">Rows per page: </label>
+                        <select id="rowsPerPage">
+                            <option value="10">10</option>
+                            <option value="25">25</option>
+                            <option value="50">50</option>
+                            <option value="100">100</option>
+                            <option value="all" selected>All</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column: Table and Results -->
+            <div class="right-column">
+                <div class="table-container">
+                    <table class="data-table" id="dataTable">
+                        <thead>
+                            <tr>
+                                <th data-sort="Time">Time <span class="sort-arrow"></span></th>
+                                <th data-sort="Name">Name <span class="sort-arrow"></span></th>
+                                <th data-sort="engName">engName <span class="sort-arrow"></span></th>
+                                <th data-sort="pctChg">PctChg <span class="sort-arrow"></span></th>
+                                <th data-sort="in_flow">Total Flow <span class="sort-arrow"></span></th>
+                                <th data-sort="super_in_flow">Super Flow <span class="sort-arrow"></span></th>
+                                <th data-sort="big_in_flow">Big Flow <span class="sort-arrow"></span></th>
+                                <th data-sort="mid_in_flow">Mid Flow <span class="sort-arrow"></span></th>
+                                <th data-sort="sml_in_flow">Small Flow <span class="sort-arrow"></span></th>
+                                <th data-sort="mktCap">MktCap <span class="sort-arrow"></span></th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableBody">
+                            <!-- Data rows will be inserted here -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="pagination" id="pagination">
+                    <!-- Pagination buttons will be inserted here -->
+                </div>
+
+                <div class="status" id="status">
+                    <!-- Status information will be displayed here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sample data - will be replaced with actual data when loaded
+        const sampleData = `Time,Name,engName,pctChg,in_flow,super_in_flow,big_in_flow,mid_in_flow,sml_in_flow,mktCap
+2025-05-02 15:31:00,1810,XIAOMI-W,6.31,877.31,285.02,-105.25,-65.67,763.21,1
+2025-05-02 15:31:00,700,TENCENT,2.22,645.82,85.57,155.02,143.55,261.68,1
+2025-05-02 15:31:00,1211,BYD COMPANY,1,528.12,16.09,194.45,134.73,182.84,1
+2025-05-02 15:31:00,3690,MEITUAN-W,2,454.89,72.59,235.03,88.59,58.69,1
+2025-05-02 15:33:00,9660,HORIZONROBOT,3,411.83,261.49,-26.48,19.76,157.06,1`;
+
+        let flowData = [];
+        let filteredData = [];
+        let currentPage = 1;
+        let rowsPerPage = 'all';
+        let currentSortColumn = 'Time';
+        let currentSortDirection = 'asc';
+
+        function parseCSV(csvData) {
+            return Papa.parse(csvData, {
+                header: true,
+                dynamicTyping: true,
+                skipEmptyLines: true
+            }).data;
+        }
+
+        function initTable(data) {
+            flowData = data;
+            filteredData = [...flowData];
+            sortData(currentSortColumn, currentSortDirection);
+            updateTable();
+        }
+
+        function updateTable() {
+            const startIndex = (currentPage - 1) * rowsPerPage;
+            const endIndex = rowsPerPage === 'all' ? filteredData.length : startIndex + parseInt(rowsPerPage);
+            const pageData = rowsPerPage === 'all' ? filteredData : filteredData.slice(startIndex, endIndex);
+            renderTable(pageData);
+            updatePagination();
+            updateStatus();
+        }
+
+        function renderTable(data) {
+            const tableBody = document.getElementById('tableBody');
+            tableBody.innerHTML = '';
+            if (data.length === 0) {
+                const tr = document.createElement('tr');
+                tr.innerHTML = '<td colspan="9" style="text-align: center;">No data found</td>';
+                tableBody.appendChild(tr);
+                return;
+            }
+            data.forEach(row => {
+                const tr = document.createElement('tr');
+                const formattedTime = new Date(row.Time).toLocaleString();
+
+                // PctChg with arrow and color
+                let pctChgCell = '';
+                if (typeof row.pctChg === 'number' && !isNaN(row.pctChg)) {
+                    if (row.pctChg > 0) {
+                        pctChgCell = `<span class="pctchg-up">${row.pctChg.toFixed(2)} &#9650;</span>`;
+                    } else if (row.pctChg < 0) {
+                        pctChgCell = `<span class="pctchg-down">${row.pctChg.toFixed(2)} &#9660;</span>`;
+                    } else {
+                        pctChgCell = `<span class="pctchg-zero">${row.pctChg.toFixed(2)}</span>`;
+                    }
+                }
+
+                tr.innerHTML = `
+                    <td>${formattedTime}</td>
+                    <td>${row.Name}</td>
+                    <td>${row.engName}</td>
+                    <td>${pctChgCell}</td>
+                    <td>${typeof row.in_flow === 'number' && !isNaN(row.in_flow) ? row.in_flow.toFixed(2) : ''}</td>
+                    <td>${typeof row.super_in_flow === 'number' && !isNaN(row.super_in_flow) ? row.super_in_flow.toFixed(2) : ''}</td>
+                    <td>${typeof row.big_in_flow === 'number' && !isNaN(row.big_in_flow) ? row.big_in_flow.toFixed(2) : ''}</td>
+                    <td>${typeof row.mid_in_flow === 'number' && !isNaN(row.mid_in_flow) ? row.mid_in_flow.toFixed(2) : ''}</td>
+                    <td>${typeof row.sml_in_flow === 'number' && !isNaN(row.sml_in_flow) ? row.sml_in_flow.toFixed(2) : ''}</td>
+                    <td>${typeof row.mktCap === 'number' && !isNaN(row.mktCap) ? row.mktCap.toFixed(2) : ''}</td>
+                `;
+                tableBody.appendChild(tr);
+            });
+        }
+
+        function sortData(column, direction) {
+            filteredData.sort((a, b) => {
+                let valueA = a[column];
+                let valueB = b[column];
+                if (column === 'Time') {
+                    valueA = new Date(valueA).getTime();
+                    valueB = new Date(valueB).getTime();
+                }
+                if (valueA < valueB) return direction === 'asc' ? -1 : 1;
+                if (valueA > valueB) return direction === 'asc' ? 1 : -1;
+                return 0;
+            });
+            document.querySelectorAll('.sort-arrow').forEach(arrow => {
+                arrow.className = 'sort-arrow';
+            });
+            const currentHeader = document.querySelector(`th[data-sort="${column}"] .sort-arrow`);
+            if (currentHeader) {
+                currentHeader.className = `sort-arrow ${direction}`;
+            }
+            currentSortColumn = column;
+            currentSortDirection = direction;
+        }
+
+        // Enhanced filterData: supports Total Flow, PctChg, MktCap min/max, and preserves name filter
+        function filterData(searchTerm) {
+            const minFlow = document.getElementById('minFlow').value === '' ? null : parseFloat(document.getElementById('minFlow').value);
+            const maxFlow = document.getElementById('maxFlow').value === '' ? null : parseFloat(document.getElementById('maxFlow').value);
+
+            // New filter values for Super, Big, Mid, Small flows
+            const minSuperFlow = document.getElementById('minSuperFlow').value === '' ? null : parseFloat(document.getElementById('minSuperFlow').value);
+            const maxSuperFlow = document.getElementById('maxSuperFlow').value === '' ? null : parseFloat(document.getElementById('maxSuperFlow').value);
+            const minBigFlow = document.getElementById('minBigFlow').value === '' ? null : parseFloat(document.getElementById('minBigFlow').value);
+            const maxBigFlow = document.getElementById('maxBigFlow').value === '' ? null : parseFloat(document.getElementById('maxBigFlow').value);
+            const minMidFlow = document.getElementById('minMidFlow').value === '' ? null : parseFloat(document.getElementById('minMidFlow').value);
+            const maxMidFlow = document.getElementById('maxMidFlow').value === '' ? null : parseFloat(document.getElementById('maxMidFlow').value);
+            const minSmlFlow = document.getElementById('minSmlFlow').value === '' ? null : parseFloat(document.getElementById('minSmlFlow').value);
+            const maxSmlFlow = document.getElementById('maxSmlFlow').value === '' ? null : parseFloat(document.getElementById('maxSmlFlow').value);
+
+            const minPctChg = document.getElementById('minPctChg').value === '' ? null : parseFloat(document.getElementById('minPctChg').value);
+            const maxPctChg = document.getElementById('maxPctChg').value === '' ? null : parseFloat(document.getElementById('maxPctChg').value);
+            const minMktCap = document.getElementById('minMktCap').value === '' ? null : parseFloat(document.getElementById('minMktCap').value);
+            const maxMktCap = document.getElementById('maxMktCap').value === '' ? null : parseFloat(document.getElementById('maxMktCap').value);
+
+            // First, apply name filter to original data if nameFilterList exists
+            let baseData = [...flowData];
+            if (nameFilterList.length > 0) {
+                baseData = filterByNameList(baseData);
+            }
+
+            // Then apply the rest of the filters
+            if (!searchTerm && minFlow === null && maxFlow === null && minSuperFlow === null && maxSuperFlow === null &&
+                minBigFlow === null && maxBigFlow === null && minMidFlow === null && maxMidFlow === null &&
+                minSmlFlow === null && maxSmlFlow === null && minPctChg === null && maxPctChg === null &&
+                minMktCap === null && maxMktCap === null) {
+                filteredData = [...baseData]; // Use baseData instead of flowData
+            } else {
+                searchTerm = searchTerm.toLowerCase();
+                filteredData = baseData.filter(row => { // Use baseData instead of flowData
+                    // Text search
+                    const matchesText = !searchTerm || Object.values(row).some(value => {
+                        if (value === null || value === undefined) return false;
+                        return value.toString().toLowerCase().includes(searchTerm);
+                    });
+                    // Numeric range filters
+                    let matchesFlow = true;
+                    if (minFlow !== null && typeof row.in_flow === "number") matchesFlow = matchesFlow && row.in_flow > minFlow;
+                    if (maxFlow !== null && typeof row.in_flow === "number") matchesFlow = matchesFlow && row.in_flow < maxFlow;
+
+                    // Super Flow filters
+                    let matchesSuperFlow = true;
+                    if (minSuperFlow !== null && typeof row.super_in_flow === "number") matchesSuperFlow = matchesSuperFlow && row.super_in_flow > minSuperFlow;
+                    if (maxSuperFlow !== null && typeof row.super_in_flow === "number") matchesSuperFlow = matchesSuperFlow && row.super_in_flow < maxSuperFlow;
+
+                    // Big Flow filters
+                    let matchesBigFlow = true;
+                    if (minBigFlow !== null && typeof row.big_in_flow === "number") matchesBigFlow = matchesBigFlow && row.big_in_flow > minBigFlow;
+                    if (maxBigFlow !== null && typeof row.big_in_flow === "number") matchesBigFlow = matchesBigFlow && row.big_in_flow < maxBigFlow;
+
+                    // Mid Flow filters
+                    let matchesMidFlow = true;
+                    if (minMidFlow !== null && typeof row.mid_in_flow === "number") matchesMidFlow = matchesMidFlow && row.mid_in_flow > minMidFlow;
+                    if (maxMidFlow !== null && typeof row.mid_in_flow === "number") matchesMidFlow = matchesMidFlow && row.mid_in_flow < maxMidFlow;
+
+                    // Small Flow filters
+                    let matchesSmlFlow = true;
+                    if (minSmlFlow !== null && typeof row.sml_in_flow === "number") matchesSmlFlow = matchesSmlFlow && row.sml_in_flow > minSmlFlow;
+                    if (maxSmlFlow !== null && typeof row.sml_in_flow === "number") matchesSmlFlow = matchesSmlFlow && row.sml_in_flow < maxSmlFlow;
+
+                    let matchesPctChg = true;
+                    if (minPctChg !== null && typeof row.pctChg === "number") matchesPctChg = matchesPctChg && row.pctChg > minPctChg;
+                    if (maxPctChg !== null && typeof row.pctChg === "number") matchesPctChg = matchesPctChg && row.pctChg < maxPctChg;
+
+                    let matchesMktCap = true;
+                    if (minMktCap !== null && typeof row.mktCap === "number") matchesMktCap = matchesMktCap && row.mktCap > minMktCap;
+                    if (maxMktCap !== null && typeof row.mktCap === "number") matchesMktCap = matchesMktCap && row.mktCap < maxMktCap;
+
+                    return matchesText && matchesFlow && matchesSuperFlow && matchesBigFlow && matchesMidFlow && matchesSmlFlow && matchesPctChg && matchesMktCap;
+                });
+            }
+            currentPage = 1;
+            sortData(currentSortColumn, currentSortDirection);
+            updateTable();
+        }
+
+        function updatePagination() {
+            const paginationDiv = document.getElementById('pagination');
+            paginationDiv.innerHTML = '';
+            if (rowsPerPage === 'all') return;
+            const totalPages = Math.ceil(filteredData.length / rowsPerPage);
+            const prevButton = document.createElement('button');
+            prevButton.textContent = 'Previous';
+            prevButton.disabled = currentPage === 1;
+            prevButton.addEventListener('click', () => {
+                if (currentPage > 1) {
+                    currentPage--;
+                    updateTable();
+                }
+            });
+            paginationDiv.appendChild(prevButton);
+            const maxPageButtons = 5;
+            let startPage = Math.max(1, currentPage - Math.floor(maxPageButtons / 2));
+            let endPage = Math.min(totalPages, startPage + maxPageButtons - 1);
+            if (endPage - startPage + 1 < maxPageButtons) {
+                startPage = Math.max(1, endPage - maxPageButtons + 1);
+            }
+            for (let i = startPage; i <= endPage; i++) {
+                const pageButton = document.createElement('button');
+                pageButton.textContent = i;
+                pageButton.className = i === currentPage ? 'active' : '';
+                pageButton.addEventListener('click', () => {
+                    currentPage = i;
+                    updateTable();
+                });
+                paginationDiv.appendChild(pageButton);
+            }
+            const nextButton = document.createElement('button');
+            nextButton.textContent = 'Next';
+            nextButton.disabled = currentPage === totalPages || totalPages === 0;
+            nextButton.addEventListener('click', () => {
+                if (currentPage < totalPages) {
+                    currentPage++;
+                    updateTable();
+                }
+            });
+            paginationDiv.appendChild(nextButton);
+        }
+
+        function updateStatus() {
+            const statusDiv = document.getElementById('status');
+            if (rowsPerPage === 'all') {
+                statusDiv.textContent = `Showing ${filteredData.length} of ${flowData.length} records`;
+            } else {
+                const startIndex = (currentPage - 1) * rowsPerPage + 1;
+                const endIndex = Math.min(startIndex + parseInt(rowsPerPage) - 1, filteredData.length);
+                const totalPages = Math.ceil(filteredData.length / rowsPerPage);
+                statusDiv.textContent = `Showing ${startIndex}-${endIndex} of ${filteredData.length} records (Page ${currentPage} of ${totalPages})`;
+            }
+        }
+
+        function loadCSVFile(filename) {
+            // Add a cache-busting query parameter using the current timestamp
+            const cacheBuster = `?cb=${new Date().getTime()}`;
+            const url = filename + cacheBuster;
+
+            fetch(url, {
+                // Force the browser to bypass the cache
+                cache: 'no-store',
+                headers: {
+                    'Cache-Control': 'no-cache, no-store, must-revalidate',
+                    'Pragma': 'no-cache',
+                    'Expires': '0'
+                }
+            })
+                .then(response => {
+                    if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+                    return response.text();
+                })
+                .then(text => {
+                    try {
+                        const data = parseCSV(text);
+                        initTable(data);
+                        document.getElementById('status').textContent = `Successfully loaded ${data.length} records from ${filename}`;
+                    } catch (e) {
+                        document.getElementById('status').textContent = `Failed to parse CSV file: ${e.message}`;
+                    }
+                })
+                .catch(error => {
+                    document.getElementById('status').textContent = `Error loading file: ${error.message}`;
+                });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Sorting
+            document.querySelectorAll('th[data-sort]').forEach(th => {
+                th.addEventListener('click', () => {
+                    const column = th.getAttribute('data-sort');
+                    let direction = 'asc';
+                    if (currentSortColumn === column && currentSortDirection === 'asc') {
+                        direction = 'desc';
+                    }
+                    sortData(column, direction);
+                    updateTable();
+                });
+            });
+
+            // Search box
+            document.getElementById('searchBox').addEventListener('input', e => {
+                filterData(e.target.value);
+            });
+
+            // Filter inputs
+            document.getElementById('minFlow').addEventListener('input', () => filterData(document.getElementById('searchBox').value));
+            document.getElementById('maxFlow').addEventListener('input', () => filterData(document.getElementById('searchBox').value));
+
+            // Super Flow filters
+            document.getElementById('minSuperFlow').addEventListener('input', () => filterData(document.getElementById('searchBox').value));
+            document.getElementById('maxSuperFlow').addEventListener('input', () => filterData(document.getElementById('searchBox').value));
+
+            // Big Flow filters
+            document.getElementById('minBigFlow').addEventListener('input', () => filterData(document.getElementById('searchBox').value));
+            document.getElementById('maxBigFlow').addEventListener('input', () => filterData(document.getElementById('searchBox').value));
+
+            // Mid Flow filters
+            document.getElementById('minMidFlow').addEventListener('input', () => filterData(document.getElementById('searchBox').value));
+            document.getElementById('maxMidFlow').addEventListener('input', () => filterData(document.getElementById('searchBox').value));
+
+            // Small Flow filters
+            document.getElementById('minSmlFlow').addEventListener('input', () => filterData(document.getElementById('searchBox').value));
+            document.getElementById('maxSmlFlow').addEventListener('input', () => filterData(document.getElementById('searchBox').value));
+
+            document.getElementById('minPctChg').addEventListener('input', () => filterData(document.getElementById('searchBox').value));
+            document.getElementById('maxPctChg').addEventListener('input', () => filterData(document.getElementById('searchBox').value));
+            document.getElementById('minMktCap').addEventListener('input', () => filterData(document.getElementById('searchBox').value));
+            document.getElementById('maxMktCap').addEventListener('input', () => filterData(document.getElementById('searchBox').value));
+
+            // Rows per page
+            document.getElementById('rowsPerPage').addEventListener('change', e => {
+                rowsPerPage = e.target.value === 'all' ? 'all' : parseInt(e.target.value);
+                currentPage = 1;
+                updateTable();
+            });
+
+            // Load/Refresh
+            document.getElementById('loadData').addEventListener('click', () => {
+                const filename = document.getElementById('fileName').value;
+                loadCSVFile(filename);
+            });
+
+            // Load sample data
+            document.getElementById('loadSampleData').addEventListener('click', () => {
+                const data = parseCSV(sampleData);
+                initTable(data);
+            });
+
+
+
+            // Initialize with sample data
+            const data = parseCSV(sampleData);
+            initTable(data);
+        });
+
+        document.getElementById('exportNameBtn').addEventListener('click', function () {
+            // Find your table (update selector if needed)
+            const table = document.querySelector('table');
+            if (!table) return alert('Table not found!');
+
+            // Find the index of the "Name" column
+            const headerCells = Array.from(table.querySelectorAll('thead th'));
+            const nameColIndex = headerCells.findIndex(cell =>
+                cell.textContent.trim().toLowerCase() === 'name'
+            );
+            if (nameColIndex === -1) return alert('Name column not found!');
+
+            // Collect "Name" values from visible rows (filtered)
+            const rows = Array.from(table.querySelectorAll('tbody tr'));
+            const names = rows
+                .filter(row => row.offsetParent !== null) // Only visible rows
+                .map(row => {
+                    const cells = row.querySelectorAll('td');
+                    return 'HKEX:' + (cells[nameColIndex]?.textContent.trim() || '');
+                })
+                .filter(name => name); // Remove empty names
+
+            if (names.length === 0) return alert('No names to export!');
+
+            // Create CSV content
+            //const csvContent = 'Name\n' + names.join('\n');
+            const csvContent = names.join('\n');
+
+            // Download as CSV
+            const blob = new Blob([csvContent], { type: 'text/csv' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'exported_names.csv';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        });
+
+        document.getElementById('exportNameBtnUSA').addEventListener('click', function () {
+            // Find your table (update selector if needed)
+            const table = document.querySelector('table');
+            if (!table) return alert('Table not found!');
+
+            // Find the index of the "Name" column
+            const headerCells = Array.from(table.querySelectorAll('thead th'));
+            const nameColIndex = headerCells.findIndex(cell =>
+                cell.textContent.trim().toLowerCase() === 'name'
+            );
+            if (nameColIndex === -1) return alert('Name column not found!');
+
+            // Collect "Name" values from visible rows (filtered)
+            const rows = Array.from(table.querySelectorAll('tbody tr'));
+            const names = rows
+                .filter(row => row.offsetParent !== null) // Only visible rows
+                .map(row => {
+                    const cells = row.querySelectorAll('td');
+                    return (cells[nameColIndex]?.textContent.trim() || '');
+                })
+                .filter(name => name); // Remove empty names
+
+            if (names.length === 0) return alert('No names to export!');
+
+            // Create CSV content
+            //const csvContent = 'Name\n' + names.join('\n');
+            const csvContent = names.join('\n');
+
+            // Download as CSV
+            const blob = new Blob([csvContent], { type: 'text/csv' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'exported_names.csv';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        });
+
+
+        // === NEW: Name List Filter by CSV (with prefix removal) ===
+        let nameFilterList = [];
+
+        // Helper: filter by name list if available
+        function filterByNameList(data) {
+            if (!Array.isArray(data)) return [];
+            if (nameFilterList.length === 0) return data;
+            return data.filter(row => nameFilterList.includes(String(row.Name).trim()));
+        }
+
+        // Event: Apply Name Filter
+
+        document.getElementById('applyNameFilterBtn').addEventListener('click', function () {
+            const fileInput = document.getElementById('nameFilterFile');
+            if (fileInput.files.length === 0) {
+                alert('Please select a CSV file.');
+                return;
+            }
+            const file = fileInput.files[0];
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                // Remove prefix up to and including the first colon for each line
+                nameFilterList = e.target.result
+                    .split(/\r?\n/)
+                    .map(line => {
+                        const trimmed = line.trim();
+                        return trimmed.includes(':') ? trimmed.substring(trimmed.indexOf(':') + 1).trim() : trimmed;
+                    })
+                    .filter(line => line.length > 0);
+
+                // Apply all filters including name filter
+                filterData(document.getElementById('searchBox').value);
+                document.getElementById('status').textContent += ` (Name filter: ${nameFilterList.length} names)`;
+            };
+            reader.readAsText(file);
+        });
+
+        // Event: Clear Name Filter
+
+
+        document.getElementById('clearNameFilterBtn').addEventListener('click', function () {
+            nameFilterList = [];
+            document.getElementById('nameFilterFile').value = '';
+            // Re-apply other filters without name filtering
+            filterData(document.getElementById('searchBox').value);
+            document.getElementById('status').textContent += ' (Name filter cleared)';
+        });
+
+
+
+    </script>
+</body>
+
+</html>
