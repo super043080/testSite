@@ -22,7 +22,8 @@ for (const [exam, { has, not }] of Object.entries(subjects)) {
 
 test('pricing is exact', async ({ page }) => {
   const text = await page.locator('#pricing').innerText();
-  for (const s of ['HKD 1,000', 'HKD 800', '90 minutes', '2 to 4 students']) expect(text).toContain(s);
+  expect(text).toContain('HKD 1,000');
+  expect(text).not.toMatch(/HKD 800|small group|2 to 4 students/);
 });
 
 test('lessons run as a free trial then 75-minute lessons', async ({ page }) => {
