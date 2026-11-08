@@ -74,7 +74,9 @@ p { margin: 0; }
 .record dt { font-weight: 500; }
 .record dd { margin: 0; color: var(--muted); }
 
-.columns p + p { margin-top: var(--space-s); }
+.principle { padding: 16px 0; border-top: 1px solid var(--rule); }
+.principle h3 { margin: 0 0 4px; font-size: 1.1875rem; line-height: 1.3; font-weight: 500; letter-spacing: -.008em; }
+.principle p { color: var(--muted); }
 
 .exam { display: flex; justify-content: space-between; align-items: center; gap: var(--space-m); padding: 14px 0; border-top: 1px solid var(--navy); }
 .exam h3 { margin: 0; font-family: var(--display); font-weight: 700; font-size: 3.25rem; line-height: 1; letter-spacing: -.03em; }

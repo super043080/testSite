@@ -56,7 +56,7 @@ One main scrolling page, in this order. Exact facts are listed under "Facts".
 
 1. **Opening screen.** Exam names, then (Bernard's approved wording): "A clearer understanding. Better prepared for exams." "One-to-one maths and science tuition with Dr. Bernard Wu, Princeton PhD." "First lesson free. At home or online, at times that suit your week."
 2. **Bernard.** Type only. A short version of his story: Brown, Princeton PhD, Distinguished Teaching Assistant award, over a decade trading derivatives at UBS. Link to the full profile.
-3. **How I teach.** The Vision page cut down to its sharpest ideas: the difference between knowing the name of a concept and understanding it; finding out what the student already knows and building from there; teaching topics before school reaches them; reasoning from first principles.
+3. **How I teach.** Four principles in Bernard's own approved wording, including original practice questions guided by the syllabus and past papers, with AI supporting his analysis.
 5. **Exams and subjects.** What is covered for each of IGCSE, IB and A-level.
 6. **How it works.** At home or online, English or Cantonese, times that fit the family's week, and the two free first steps.
 7. **Pricing.** Plainly stated.

@@ -52,3 +52,21 @@ test('forbidden content is absent', async ({ page }) => {
   await expect(page.locator('a[href^="tel:"]')).toHaveCount(0);
   await expect(page.locator('main img, header img')).toHaveCount(0);
 });
+
+test('how I teach uses the agreed wording', async ({ page }) => {
+  const section = page.locator('#teach');
+  await expect(section.locator('h2')).toHaveText('How I teach');
+  await expect(section.locator('h3')).toHaveText([
+    'Start with what your child knows.',
+    'Teach ahead, so school makes more sense.',
+    'Build understanding from first principles.',
+    'Practise with purpose.',
+  ]);
+  const text = await section.innerText();
+  for (const s of [
+    'I identify gaps in understanding and work through them before building on what your child already knows.',
+    'I introduce topics before they come up at school, giving your child time to understand the ideas before revisiting them in class.',
+    'I teach students to ask why, connect ideas, and work through unfamiliar problems—not simply memorise steps.',
+    'I use the syllabus and past papers to guide original practice questions, with AI supporting my analysis. Practice targets gaps, reinforces key skills, and builds towards exam-style problems. The aim is to help your child enter the exam hall confident, prepared, and ready to think independently.',
+  ]) expect(text).toContain(s);
+});
