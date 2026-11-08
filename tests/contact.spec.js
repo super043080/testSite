@@ -50,7 +50,7 @@ test('needs a way to reach the family', async ({ page }) => {
 
 test('subject options', async ({ page }) => {
   const options = await form(page).locator('[name="subject"] option').allTextContents();
-  expect(options.filter((o) => !/^Choose/.test(o))).toEqual(['Mathematics', 'Physics', 'Chemistry (IGCSE only)', 'Biology (IGCSE only)']);
+  expect(options.filter((o) => !/^Choose/.test(o))).toEqual(['Mathematics', 'Science', 'Physics', 'Chemistry', 'Biology']);
 });
 
 test('exam options', async ({ page }) => {

@@ -99,7 +99,7 @@ Taken from the current site. Do not add to or alter these.
 - Secondary text uses a muted slate on white. Buttons are navy with white text.
 - On desktop, the navy column stays in view while the white side scrolls.
 - The first-screen "Free trial" button goes to the contact form. WhatsApp links open with a short pre-written greeting.
-- The form's subject choices are Mathematics, Physics, Chemistry and Biology, with the last two marked as IGCSE only.
+- The form's subject choices are Mathematics, Science, Physics, Chemistry and Biology (Bernard's decision).
 - The form asks for name, email, phone, exam, subject and message, with only name, a way to reach the family (email or phone), and message required. It gets a honeypot field to reduce spam.
 - The exams section lists only the exams and subjects. It names no exam boards, syllabus levels or topic lists, since none are confirmed, and it can be extended later.
 - The walkthrough has no voice narration; tapping through lines is quieter and works on a silent phone.
