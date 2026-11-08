@@ -108,7 +108,30 @@
         <div class="price"><p class="amount">HKD 800</p><p>Per student in a small group of 2 to 4 students, 90 minutes</p></div>
         <p class="note">The orientation and the first trial lesson are free.</p>
       </section>
-      <section id="contact"></section>
+      <section id="contact">
+        <h2>Book a free trial, or just ask a question</h2>
+        <p class="lead">WhatsApp is the quickest way to reach me.</p>
+        <div class="actions contact-actions">
+          <a class="btn" href="https://wa.me/85263302851?text=Hello%20Bernard%2C%20I%27d%20like%20to%20ask%20about%20lessons.">WhatsApp Bernard</a>
+        </div>
+        <p class="mail">Or email <a href="mailto:bernard.wu@alumni.princeton.edu">bernard.wu@alumni.princeton.edu</a></p>
+
+        <form name="contact" method="POST" action="/thanks" data-netlify="true" netlify-honeypot="company">
+          <p class="trap"><label>Leave this field empty <input name="company" tabindex="-1" autocomplete="off"></label></p>
+          <div class="field"><label for="f-name">Name</label><input id="f-name" name="name" autocomplete="name" required></div>
+          <div class="pair">
+            <div class="field"><label for="f-email">Email</label><input id="f-email" name="email" type="email" autocomplete="email"></div>
+            <div class="field"><label for="f-phone">Phone</label><input id="f-phone" name="phone" type="tel" autocomplete="tel"></div>
+          </div>
+          <p class="hint">Email or phone, whichever you prefer.</p>
+          <div class="pair">
+            <div class="field"><label for="f-exam">Exam</label><select id="f-exam" name="exam"><option value="">Choose an exam</option><option>IGCSE</option><option>IB</option><option>A-level</option></select></div>
+            <div class="field"><label for="f-subject">Subject</label><select id="f-subject" name="subject"><option value="">Choose a subject</option><option>Mathematics</option><option>Physics</option><option>Chemistry (IGCSE only)</option><option>Biology (IGCSE only)</option></select></div>
+          </div>
+          <div class="field"><label for="f-message">Message</label><textarea id="f-message" name="message" rows="5" required></textarea></div>
+          <button class="btn" type="submit">Send message</button>
+        </form>
+      </section>
 
       <footer>Private lessons with Bernard Wu.</footer>
     </main>
@@ -119,5 +142,6 @@
     <a href="#contact">Free trial</a>
   </div>
   <script src="/walkthrough.js" defer></script>
+  <script src="/contact.js" defer></script>
 </body>
 </html>

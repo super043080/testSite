@@ -46,6 +46,7 @@ section[id] { scroll-margin-top: var(--space-m); }
 .intro { background: var(--navy); color: var(--white); padding: 18px var(--gutter) 28px; min-height: calc(42svh - var(--bar-height)); }
 .intro h1 { margin: 0; font-size: 1.3125rem; line-height: 1.22; font-weight: 500; letter-spacing: -.012em; text-wrap: balance; }
 .intro p { margin: 8px 0 0; }
+.notice { min-height: calc(100svh - 58svh); }
 .actions { display: none; }
 
 .btn { display: inline-flex; align-items: center; min-height: 46px; padding: 0 20px; background: var(--navy); color: var(--white); font-weight: 500; font-size: .9375rem; text-decoration: none; box-shadow: inset 0 0 0 1px var(--navy); transition: background-color .18s ease, color .18s ease; }
@@ -88,6 +89,17 @@ p { margin: 0; }
 .steps li::before { content: counter(step); position: absolute; left: 0; top: 0; font-family: var(--display); font-weight: 700; font-size: 1.75rem; line-height: 1.05; }
 .steps strong { display: block; font-weight: 500; }
 
+.mail { margin-top: var(--space-s); overflow-wrap: anywhere; }
+.contact-actions { display: flex; margin-top: var(--space-s); }
+form { margin-top: var(--space-l); }
+.trap { display: none; }
+.field { margin-bottom: 18px; }
+.field label { display: block; font-weight: 500; margin-bottom: 6px; }
+.field input, .field select, .field textarea { display: block; width: 100%; min-height: 48px; padding: 10px 12px; font: 400 1rem var(--body); color: var(--ink); background: var(--white); border: 1px solid #76818f; border-radius: 0; }
+.field textarea { resize: vertical; }
+.hint { color: var(--muted); font-size: .9375rem; margin: -8px 0 18px; }
+form .btn { cursor: pointer; border: 0; font-family: var(--body); }
+
 .price { padding: 16px 0; border-top: 1px solid var(--rule); }
 .amount { font-family: var(--display); font-weight: 700; font-size: 3.25rem; line-height: 1.05; letter-spacing: -.03em; }
 .note { color: var(--muted); padding-top: 16px; border-top: 1px solid var(--rule); }
@@ -111,6 +123,7 @@ body { padding-bottom: calc(var(--bar-height) + env(safe-area-inset-bottom)); }
   section[id] { padding: var(--breath) 0 0; }
   h2 { font-size: 2.375rem; line-height: 1.1; letter-spacing: -.02em; }
   .lead { font-size: 1.3125rem; }
+  .pair { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
   .board { margin: 0; padding: 36px 40px; }
   .board ol { font-size: 1.375rem; }
   .board li:last-child { font-size: 1.75rem; }
