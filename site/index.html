@@ -69,7 +69,21 @@
           <p>The aim is for students to reason from first principles and develop their own way of solving problems, so that they can handle a question they have never seen, in the exam and without me.</p>
         </div>
       </section>
-      <section id="worked"></section>
+      <section id="worked">
+        <h2>See how a problem gets worked</h2>
+        <div class="board">
+          <p class="question">A cyclist rides 40 km at <i>p</i> km/h, then 20 km at <i>q</i> km/h. Find the average speed for the whole journey.</p>
+          <ol aria-live="polite">
+            <li>Total distance = 60 km</li>
+            <li>Total time = 40/<i>p</i> + 20/<i>q</i></li>
+            <li>Average speed = 60 ÷ (40/<i>p</i> + 20/<i>q</i>)</li>
+            <li>= 60 ÷ ((40<i>q</i> + 20<i>p</i>)/<i>pq</i>)</li>
+            <li>= 60<i>pq</i>/(40<i>q</i> + 20<i>p</i>)</li>
+            <li>= 3<i>pq</i>/(<i>p</i> + 2<i>q</i>)</li>
+          </ol>
+          <button type="button" id="worked-next" hidden>Show the next line</button>
+        </div>
+      </section>
       <section id="exams">
         <h2>What I teach</h2>
         <div class="exam" data-exam="igcse"><h3>IGCSE</h3><p>Mathematics<br>Science: Biology, Physics, Chemistry</p></div>
@@ -104,5 +118,6 @@
     <a href="https://wa.me/85263302851?text=Hello%20Bernard%2C%20I%27d%20like%20to%20ask%20about%20lessons.">WhatsApp</a>
     <a href="#contact">Free trial</a>
   </div>
+  <script src="/walkthrough.js" defer></script>
 </body>
 </html>
