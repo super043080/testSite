@@ -18,11 +18,11 @@ for (const [width, height] of [[900, 700], [1366, 768], [1440, 900], [1920, 900]
   });
 }
 
-test('exam names are no more than 135px on a wide desktop', async ({ page }) => {
+test('exam names are no more than 115px on a wide desktop', async ({ page }) => {
   await page.setViewportSize({ width: 1920, height: 1080 });
   await page.goto('/');
   const size = await page.locator('.big').evaluate((e) => parseFloat(getComputedStyle(e).fontSize));
-  expect(size).toBeLessThanOrEqual(135);
+  expect(size).toBeLessThanOrEqual(115);
 });
 
 test('the brand name is prominent on desktop', async ({ page }) => {
@@ -37,4 +37,11 @@ test('the brand name is larger on phones too', async ({ page }) => {
   await page.goto('/');
   const size = await page.locator('.logo').evaluate((e) => parseFloat(getComputedStyle(e).fontSize));
   expect(size).toBeGreaterThanOrEqual(25);
+});
+
+test('exam names are no more than 102px on a typical phone', async ({ page }) => {
+  await page.setViewportSize({ width: 375, height: 812 });
+  await page.goto('/');
+  const size = await page.locator('.big').evaluate((e) => parseFloat(getComputedStyle(e).fontSize));
+  expect(size).toBeLessThanOrEqual(102);
 });
