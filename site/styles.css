@@ -19,7 +19,10 @@
 }
 
 *, *::before, *::after { box-sizing: border-box; }
-html { -webkit-text-size-adjust: 100%; }
+html { -webkit-text-size-adjust: 100%; scroll-padding-bottom: calc(var(--bar-height) + 16px); }
+a, button, summary, input, select, textarea { touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+.skip { position: absolute; left: 12px; top: -80px; z-index: 20; padding: 12px 16px; background: var(--white); color: var(--navy); font-weight: 500; }
+.skip:focus { top: 12px; }
 body { margin: 0; background: var(--white); color: var(--ink); font: 400 1.0625rem/1.55 var(--body); -webkit-font-smoothing: antialiased; }
 ::selection { background: var(--navy); color: var(--white); }
 .side ::selection, .intro ::selection { background: var(--white); color: var(--navy); }
@@ -38,7 +41,7 @@ section[id] { scroll-margin-top: var(--space-m); }
 .menu { position: relative; }
 .menu summary { list-style: none; cursor: pointer; font-weight: 500; font-size: .9375rem; min-height: 44px; min-width: 44px; display: flex; align-items: center; justify-content: flex-end; }
 .menu summary::-webkit-details-marker { display: none; }
-.menu nav { position: absolute; right: 0; top: 100%; z-index: 5; background: var(--white); color: var(--ink); min-width: 190px; padding: 8px 0; box-shadow: 0 10px 28px rgba(6, 18, 36, .32); }
+.menu nav { position: absolute; right: 0; top: 100%; z-index: 5; background: var(--white); color: var(--ink); min-width: 190px; padding: 8px 0; box-shadow: 0 10px 28px rgba(0, 0, 0, .3); }
 .menu nav a { display: flex; align-items: center; min-height: 46px; padding: 0 18px; text-decoration: none; font-weight: 500; }
 .menu nav :focus-visible { outline-color: var(--navy); outline-offset: -3px; }
 
@@ -115,6 +118,7 @@ form .btn { cursor: pointer; border: 0; font-family: var(--body); }
 .amount { font-family: var(--display); font-weight: 700; font-size: 3.25rem; line-height: 1.05; letter-spacing: -.03em; }
 .note { color: var(--muted); padding-top: 16px; border-top: 1px solid var(--rule); }
 
+footer .more { display: inline-flex; align-items: center; min-height: 44px; }
 footer { padding: var(--space-l) var(--gutter) var(--space-m); color: var(--muted); font-size: .9375rem; }
 
 .phone-bar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 10; display: flex; background: var(--white); color: var(--navy); box-shadow: 0 -1px 0 var(--rule); padding-bottom: env(safe-area-inset-bottom); }

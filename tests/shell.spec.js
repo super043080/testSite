@@ -47,3 +47,20 @@ test('desktop navy column stays in view', async ({ page }) => {
   expect((await side.boundingBox()).y).toBe(0);
   await expect(side).toHaveCSS('background-color', 'rgb(12, 35, 64)');
 });
+
+test('keyboard users can skip to the main content', async ({ page }) => {
+  await page.keyboard.press('Tab');
+  const skip = page.locator('a.skip');
+  await expect(skip).toBeFocused();
+  await expect(skip).toHaveAttribute('href', '#main');
+  await expect(skip).toBeInViewport();
+  await expect(page.locator('main#main')).toHaveCount(1);
+});
+
+test('browser chrome matches the navy', async ({ page }) => {
+  await expect(page.locator('meta[name="theme-color"]')).toHaveAttribute('content', '#0c2340');
+});
+
+test('email field is not spellchecked', async ({ page }) => {
+  await expect(page.locator('input[name="email"]')).toHaveAttribute('spellcheck', 'false');
+});
