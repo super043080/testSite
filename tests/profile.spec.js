@@ -62,3 +62,8 @@ test('no sideways scroll when expanded', async ({ page }) => {
   await open(page);
   expect(await noSidewaysScroll(page)).toBe(true);
 });
+
+test('research sentence uses the agreed wording', async ({ page }) => {
+  await open(page);
+  await expect(page.locator('.full-profile-body > p').first()).toHaveText('At Princeton, my doctoral research explored ways to make fiber-optic networks more secure using optical steganography—a technique for concealing information within optical signals.');
+});
