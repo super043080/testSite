@@ -74,3 +74,9 @@ test('how I teach uses the agreed wording', async ({ page }) => {
 test('booking lives inside pricing', async ({ page }) => {
   await expect(page.locator('#pricing #contact form[name="contact"]')).toHaveCount(1);
 });
+
+test('about uses the agreed wording and keeps the record lines', async ({ page }) => {
+  await expect(page.locator('#bernard h2')).toHaveText('Every lesson is taught personally by me, Bernard Wu.');
+  await expect(page.locator('#bernard .lead')).toHaveText('I studied electrical engineering and economics at Brown University before earning my PhD in electrical engineering at Princeton University, where I received the department’s Distinguished Teaching Assistant Award. I also spent more than a decade as an equity derivatives trader at UBS in Hong Kong.');
+  await expect(page.locator('#bernard > .record > div')).toHaveCount(3);
+});
