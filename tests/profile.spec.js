@@ -1,32 +1,64 @@
 const { test, expect } = require('@playwright/test');
-const { isPhone, noSidewaysScroll } = require('./helpers');
+const { noSidewaysScroll } = require('./helpers');
 
-test.beforeEach(async ({ page }) => { await page.goto('/people'); });
+const panel = (page) => page.locator('details#profile');
+const toggle = (page) => page.locator('details#profile > summary');
+const open = (page) => toggle(page).click();
 
-test('full record is present', async ({ page }) => {
-  const text = await page.locator('main').innerText();
-  for (const s of ['2009', 'UBS', 'ING', 'Lehman Brothers', 'Stealth communications', 'Sigma Xi', 'Distinguished Teaching Assistant']) expect(text).toContain(s);
-  await expect(page.locator('main a[href*="scholar.google.com"]')).toBeVisible();
+test.beforeEach(async ({ page }) => { await page.goto('/'); });
+
+test('profile starts collapsed with a clear label', async ({ page }) => {
+  await expect(toggle(page)).toHaveText('Read my full profile', { useInnerText: true });
+  await expect(page.locator('#profile a[href*="proquest"]')).toBeHidden();
 });
 
-test('skills list is gone', async ({ page }) => {
-  const text = await page.locator('body').innerText();
+test('expands in place without leaving the page', async ({ page }) => {
+  await open(page);
+  await expect(page).toHaveURL(/\/$/);
+  await expect(page.locator('#profile a[href*="proquest"]')).toBeVisible();
+  await expect(toggle(page)).toHaveText('Hide full profile', { useInnerText: true });
+});
+
+test('collapses again from the top control', async ({ page }) => {
+  await open(page);
+  await open(page);
+  await expect(page.locator('#profile a[href*="proquest"]')).toBeHidden();
+  await expect(toggle(page)).toHaveText('Read my full profile', { useInnerText: true });
+});
+
+test('collapses from the control at the end and returns to the toggle', async ({ page }) => {
+  await open(page);
+  await page.locator('#profile-close').click();
+  await expect(page.locator('#profile a[href*="proquest"]')).toBeHidden();
+  await expect(toggle(page)).toBeInViewport();
+});
+
+test('full record is present', async ({ page }) => {
+  await open(page);
+  const text = await panel(page).innerText();
+  for (const s of ['2009', 'UBS', 'ING', 'Lehman Brothers', 'Stealth communications', 'Sigma Xi', 'Distinguished Teaching Assistant', 'Ultrafast Phenomena (2006)']) expect(text).toContain(s);
+  await expect(panel(page).locator('a[href*="scholar.google.com"]')).toBeVisible();
   expect(text).not.toMatch(/Solidity|Web3/);
 });
 
-test('publication 7 is fixed', async ({ page }) => {
-  expect(await page.locator('main').innerText()).toContain('Ultrafast Phenomena (2006)');
+test('an old /people link can open the profile directly', async ({ page }) => {
+  await page.goto('/#profile');
+  await expect(panel(page)).toHaveAttribute('open', '');
 });
 
-test('same navy brand', async ({ page }) => {
-  await expect(page.locator('.side')).toHaveCSS('background-color', 'rgb(12, 35, 64)');
+test('still opens and closes without JavaScript', async ({ browser, baseURL }) => {
+  const context = await browser.newContext({ javaScriptEnabled: false, baseURL });
+  const page = await context.newPage();
+  await page.goto('/');
+  await open(page);
+  await expect(page.locator('#profile a[href*="proquest"]')).toBeVisible();
+  await expect(page.locator('#profile-close')).toBeHidden();
+  await open(page);
+  await expect(page.locator('#profile a[href*="proquest"]')).toBeHidden();
+  await context.close();
 });
 
-test('phone bar leads back to the contact section', async ({ page }) => {
-  test.skip(!isPhone(page), 'phone only');
-  await expect(page.locator('.phone-bar a', { hasText: 'Free trial' })).toHaveAttribute('href', '/#contact');
-});
-
-test('no sideways scroll', async ({ page }) => {
+test('no sideways scroll when expanded', async ({ page }) => {
+  await open(page);
   expect(await noSidewaysScroll(page)).toBe(true);
 });

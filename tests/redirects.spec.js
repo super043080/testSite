@@ -11,5 +11,7 @@ test('old addresses redirect to their new homes', () => {
     '/vision.html /#teach 301',
     '/program.html /#exams 301',
     '/contact.html /#contact 301',
+    '/people /#profile 301',
+    '/people.html /#profile 301',
   ]);
 });

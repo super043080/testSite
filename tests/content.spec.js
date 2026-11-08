@@ -52,7 +52,3 @@ test('forbidden content is absent', async ({ page }) => {
   await expect(page.locator('a[href^="tel:"]')).toHaveCount(0);
   await expect(page.locator('main img, header img')).toHaveCount(0);
 });
-
-test('Bernard links to the profile', async ({ page }) => {
-  await expect(page.locator('#bernard a[href="/people"]')).toBeVisible();
-});

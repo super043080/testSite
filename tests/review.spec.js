@@ -19,8 +19,6 @@ test('missing pages offer a way home', async ({ page }) => {
 
 for (const [url, selector] of [
   ['/', '#contact a[href^="mailto:"]'],
-  ['/people', 'a[href*="scholar.google.com"]'],
-  ['/people', 'a[href*="proquest.com"]'],
   ['/thanks', 'main a[href="/"]'],
 ]) {
   test(`tap target is large enough: ${selector}`, async ({ page }) => {
@@ -29,12 +27,19 @@ for (const [url, selector] of [
   });
 }
 
+for (const selector of ['a[href*="scholar.google.com"]', 'a[href*="proquest.com"]', 'details#profile > summary']) {
+  test(`profile tap target is large enough: ${selector}`, async ({ page }) => {
+    await page.goto('/');
+    await page.locator('details#profile > summary').click();
+    expect((await page.locator(selector).boundingBox()).height).toBeGreaterThanOrEqual(44);
+  });
+}
+
 test('copy stays within the facts', async ({ page }) => {
   await page.goto('/');
   const home = await page.locator('main').innerText();
   expect(home).not.toMatch(/quickest|never seen|first trial lesson|After that I/);
-  await page.goto('/people');
-  expect(await page.locator('main').innerText()).not.toMatch(/I then worked/);
+  expect(await page.locator('details#profile').textContent()).not.toMatch(/I then worked/);
 });
 
 test('search listing does not imply sciences at every level', async ({ page }) => {

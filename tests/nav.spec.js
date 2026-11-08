@@ -1,7 +1,7 @@
 const { test, expect } = require('@playwright/test');
 const { isPhone } = require('./helpers');
 
-for (const path of ['/', '/people', '/thanks']) {
+for (const path of ['/', '/thanks']) {
   test(`no WhatsApp item in the menus on ${path}`, async ({ page }) => {
     await page.goto(path);
     await expect(page.locator('.desk-nav a, .menu nav a').filter({ hasText: 'WhatsApp' })).toHaveCount(0);
