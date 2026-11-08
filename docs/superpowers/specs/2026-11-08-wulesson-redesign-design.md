@@ -54,7 +54,7 @@ The redesign has failed, even if it works technically, if:
 
 One main scrolling page, in this order. Exact facts are listed under "Facts".
 
-1. **Opening screen.** Exam names, then: "Maths and science, one on one with Bernard Wu, Princeton PhD." and "First lesson free."
+1. **Opening screen.** Exam names, then (Bernard's approved wording): "A clearer understanding. Better prepared for exams." "One-to-one maths and science tuition with Dr. Bernard Wu, Princeton PhD." "First lesson free. At home or online, at times that suit your week."
 2. **Bernard.** Type only. A short version of his story: Brown, Princeton PhD, Distinguished Teaching Assistant award, over a decade trading derivatives at UBS. Link to the full profile.
 3. **How I teach.** The Vision page cut down to its sharpest ideas: the difference between knowing the name of a concept and understanding it; finding out what the student already knows and building from there; teaching topics before school reaches them; reasoning from first principles.
 5. **Exams and subjects.** What is covered for each of IGCSE, IB and A-level.

@@ -64,3 +64,19 @@ test('browser chrome matches the navy', async ({ page }) => {
 test('email field is not spellchecked', async ({ page }) => {
   await expect(page.locator('input[name="email"]')).toHaveAttribute('spellcheck', 'false');
 });
+
+test('opening message uses the agreed wording', async ({ page }) => {
+  await expect(page.locator('.intro h1')).toHaveText(/A clearer understanding\.\s*Better prepared for exams\./);
+  const text = await page.locator('.intro').innerText();
+  expect(text).toContain('One-to-one maths and science tuition with Dr. Bernard Wu, Princeton PhD.');
+  expect(text).toContain('First lesson free. At home or online, at times that suit your week.');
+});
+
+test('opening message fits above the phone bar on a small phone', async ({ page }) => {
+  test.skip(!isPhone(page), 'phone only');
+  await page.setViewportSize({ width: 320, height: 568 });
+  await page.goto('/');
+  const last = await page.locator('.intro > p').last().boundingBox();
+  const bar = await page.locator('.phone-bar').boundingBox();
+  expect(last.y + last.height).toBeLessThanOrEqual(bar.y);
+});
