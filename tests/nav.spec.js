@@ -17,7 +17,7 @@ test('desktop menu stays visible while scrolling', async ({ page }) => {
   expect((await nav.boundingBox()).y).toBe(0);
 });
 
-for (const [label, id] of [['Exams', 'exams'], ['Bernard', 'bernard'], ['Pricing', 'pricing']]) {
+for (const [label, id] of [['Exams', 'exams'], ['About', 'bernard'], ['Pricing', 'pricing']]) {
   test(`jumping to ${label} leaves its heading clear of the menu`, async ({ page }) => {
     test.skip(isPhone(page), 'desktop only');
     await page.goto('/');

@@ -64,7 +64,7 @@ One main scrolling page, in this order. Exact facts are listed under "Facts".
 
 An **expandable full profile** inside the Bernard section opens and collapses in place (Bernard's decision) and replaces the separate page; `/people` redirects to it. It holds the full record: degrees, experience, thesis, honours, publications and the Google Scholar link. Omit the "Skills" list (HTML, Solidity, and so on), which does not help a parent.
 
-Navigation: Exams, Bernard, Pricing. The desktop menu stays visible while scrolling (Bernard's decision).
+Navigation: Exams, About, Pricing. The desktop menu stays visible while scrolling (Bernard's decision).
 
 ## Facts
 
