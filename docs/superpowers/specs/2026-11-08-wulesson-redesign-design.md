@@ -75,7 +75,7 @@ Taken from the current site. Do not add to or alter these.
 - UBS, Executive Director, Equity Derivatives Trader, Hong Kong, 2010-2021 (about 10.5 years); ING, Associate, Exotic Equity Derivatives Trader, Singapore, 2008-2009; Lehman Brothers, Associate, Equity Derivatives Structuring, Hong Kong, 2007-2008.
 - Distinguished Teaching Assistant award, Princeton Electrical Engineering, 2004 (Electromagnetic Field Theory and Optics, Physical Optics). Sigma Xi, Tau Beta Pi, Omicron Delta Epsilon (2001).
 - Format: at the student's home or online by Zoom or Google Meet. English and Cantonese. Do not name a service area: Bernard asked for the "Gold Coast area" wording to be removed.
-- Pricing: one on one HKD 1,000. Small groups are not offered on the site (Bernard's decision).
+- Pricing: one on one HKD 1,000 for 75 minutes. Small groups are not offered on the site (Bernard's decision).
 - Free first step: a free 1-hour trial lesson. There is no orientation (Bernard's decision). Regular lessons run 75 minutes.
 - Email bernard.wu@alumni.princeton.edu. WhatsApp +852 6330 2851 (`https://wa.me/85263302851`).
 - Thesis, publications and Scholar link: carry over from the repo's `people.html`, fixing the missing `)` in publication 7.

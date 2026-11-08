@@ -23,6 +23,8 @@ for (const [exam, { has, not }] of Object.entries(subjects)) {
 test('pricing is exact', async ({ page }) => {
   const text = await page.locator('#pricing').innerText();
   expect(text).toContain('HKD 1,000');
+  expect(text).toContain('75 minutes');
+  expect(await page.locator('body').innerText()).not.toMatch(/90[- ]minute/);
   expect(text).not.toMatch(/HKD 800|small group|2 to 4 students/);
 });
 
