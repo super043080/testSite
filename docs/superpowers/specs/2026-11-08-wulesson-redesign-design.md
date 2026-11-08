@@ -74,7 +74,7 @@ Taken from the current site. Do not add to or alter these.
 - Ph.D. Princeton 2009 (Electrical Engineering); M.A. Princeton 2004 (Electrical Engineering); A.B. Brown, magna cum laude, 2001 (Economics); Sc.B. Brown, magna cum laude, 2001 (Electrical Engineering).
 - UBS, Executive Director, Equity Derivatives Trader, Hong Kong, 2010-2021 (about 10.5 years); ING, Associate, Exotic Equity Derivatives Trader, Singapore, 2008-2009; Lehman Brothers, Associate, Equity Derivatives Structuring, Hong Kong, 2007-2008.
 - Distinguished Teaching Assistant award, Princeton Electrical Engineering, 2004 (Electromagnetic Field Theory and Optics, Physical Optics). Sigma Xi, Tau Beta Pi, Omicron Delta Epsilon (2001).
-- Format: at the student's home or online by Zoom or Google Meet. English and Cantonese. Do not name a service area: Bernard asked for the "Gold Coast area" wording to be removed.
+- Format: at the student's home or online by Zoom or Google Meet. English only on the site (Bernard's decision). Do not name a service area: Bernard asked for the "Gold Coast area" wording to be removed.
 - Pricing: one on one HKD 1,000 for 75 minutes. Small groups are not offered on the site (Bernard's decision).
 - Free first step: a free 1-hour trial lesson. There is no orientation (Bernard's decision). Regular lessons run 75 minutes.
 - Email bernard.wu@alumni.princeton.edu. WhatsApp +852 6330 2851 (`https://wa.me/85263302851`).

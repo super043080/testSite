@@ -41,7 +41,8 @@ test('orientation is gone from the whole page', async ({ page }) => {
 
 test('format facts are present', async ({ page }) => {
   const text = await page.locator('#how').innerText();
-  for (const s of ['Zoom', 'Google Meet', 'English', 'Cantonese']) expect(text).toContain(s);
+  for (const s of ['Zoom', 'Google Meet', 'English']) expect(text).toContain(s);
+  expect(await page.content()).not.toContain('Cantonese');
 });
 
 test('forbidden content is absent', async ({ page }) => {
