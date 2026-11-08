@@ -4,7 +4,7 @@ test.beforeEach(async ({ page }) => { await page.goto('/'); });
 
 test('sections appear in the agreed order', async ({ page }) => {
   const ids = await page.locator('main section[id]').evaluateAll((s) => s.map((e) => e.id));
-  expect(ids).toEqual(['bernard', 'teach', 'worked', 'exams', 'how', 'pricing', 'contact']);
+  expect(ids).toEqual(['bernard', 'teach', 'exams', 'how', 'pricing', 'contact']);
 });
 
 const subjects = {
@@ -25,10 +25,15 @@ test('pricing is exact', async ({ page }) => {
   for (const s of ['HKD 1,000', 'HKD 800', '90 minutes', '2 to 4 students']) expect(text).toContain(s);
 });
 
-test('both free first steps are named', async ({ page }) => {
+test('lessons run as a free trial then 75-minute lessons', async ({ page }) => {
   const text = await page.locator('#how').innerText();
-  expect(text).toContain('30-minute orientation');
   expect(text).toContain('1-hour trial');
+  expect(text).toContain('75-minute lessons');
+  expect(await page.locator('#how .steps li').count()).toBe(2);
+});
+
+test('orientation is gone from the whole page', async ({ page }) => {
+  expect(await page.locator('body').innerText()).not.toMatch(/orientation/i);
 });
 
 test('format facts are present', async ({ page }) => {

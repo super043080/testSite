@@ -5,21 +5,6 @@ const { isPhone } = require('./helpers');
 
 const css = () => fs.readFileSync(path.join(__dirname, '../site/styles.css'), 'utf8');
 
-test('walkthrough stays clear of the phone bar on every tap', async ({ page }) => {
-  await page.setViewportSize({ width: 375, height: 667 });
-  await page.goto('/');
-  const next = page.locator('#worked-next');
-  const barTop = (await page.locator('.phone-bar').boundingBox()).y;
-  await next.evaluate((b) => { const r = b.getBoundingClientRect(); window.scrollBy(0, r.bottom - (innerHeight - 60)); });
-  for (let i = 0; i < 5; i++) {
-    await next.click();
-    const b = await next.boundingBox();
-    expect(b.y + b.height).toBeLessThanOrEqual(barTop);
-  }
-  const last = await page.locator('#worked ol li').last().boundingBox();
-  expect(last.y + last.height).toBeLessThanOrEqual(barTop);
-});
-
 test('old .html addresses redirect as well', () => {
   const rules = fs.readFileSync(path.join(__dirname, '../site/_redirects'), 'utf8');
   for (const rule of ['/vision.html /#teach 301', '/program.html /#exams 301', '/contact.html /#contact 301']) expect(rules).toContain(rule);

@@ -57,7 +57,6 @@ One main scrolling page, in this order. Exact facts are listed under "Facts".
 1. **Opening screen.** Exam names, then: "Maths and science, one on one with Bernard Wu, Princeton PhD." and "First lesson free."
 2. **Bernard.** Type only. A short version of his story: Brown, Princeton PhD, Distinguished Teaching Assistant award, over a decade trading derivatives at UBS. Link to the full profile.
 3. **How I teach.** The Vision page cut down to its sharpest ideas: the difference between knowing the name of a concept and understanding it; finding out what the student already knows and building from there; teaching topics before school reaches them; reasoning from first principles.
-4. **See a worked problem.** The average speed walkthrough from `math3.html`, stepped through line by line by tapping, so a parent sees the teaching rather than reads about it.
 5. **Exams and subjects.** What is covered for each of IGCSE, IB and A-level.
 6. **How it works.** At home or online, English or Cantonese, times that fit the family's week, and the two free first steps.
 7. **Pricing.** Plainly stated.
@@ -65,7 +64,7 @@ One main scrolling page, in this order. Exact facts are listed under "Facts".
 
 A separate **profile page** at the existing `/people` address holds the full record: degrees, experience, thesis, honours, publications and the Google Scholar link. Omit the "Skills" list (HTML, Solidity, and so on), which does not help a parent.
 
-Navigation: Exams, Bernard, Pricing, WhatsApp (as in the approved mockup).
+Navigation: Exams, Bernard, Pricing. The desktop menu stays visible while scrolling (Bernard's decision).
 
 ## Facts
 
@@ -77,7 +76,7 @@ Taken from the current site. Do not add to or alter these.
 - Distinguished Teaching Assistant award, Princeton Electrical Engineering, 2004 (Electromagnetic Field Theory and Optics, Physical Optics). Sigma Xi, Tau Beta Pi, Omicron Delta Epsilon (2001).
 - Format: at the student's home or online by Zoom or Google Meet. English and Cantonese. Do not name a service area: Bernard asked for the "Gold Coast area" wording to be removed.
 - Pricing: one on one HKD 1,000 for 90 minutes. Small group of 2 to 4 students, HKD 800 per student for 90 minutes.
-- Free first steps: Lesson 0, a free 30-minute orientation; Lesson 1, a free 1-hour trial lesson.
+- Free first step: a free 1-hour trial lesson. There is no orientation (Bernard's decision). Regular lessons run 75 minutes.
 - Email bernard.wu@alumni.princeton.edu. WhatsApp +852 6330 2851 (`https://wa.me/85263302851`).
 - Thesis, publications and Scholar link: carry over from the repo's `people.html`, fixing the missing `)` in publication 7.
 
