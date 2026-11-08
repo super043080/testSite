@@ -11,6 +11,7 @@ function initWalkthrough(root) {
   next.addEventListener('click', () => {
     shown = shown >= lines.length ? 1 : shown + 1;
     render();
+    next.scrollIntoView({ block: 'nearest' });
   });
 
   next.hidden = false;
