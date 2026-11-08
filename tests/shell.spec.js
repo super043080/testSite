@@ -80,3 +80,8 @@ test('opening message fits above the phone bar on a small phone', async ({ page 
   const bar = await page.locator('.phone-bar').boundingBox();
   expect(last.y + last.height).toBeLessThanOrEqual(bar.y);
 });
+
+test('page asks browsers not to apply forced dark colours', async ({ page }) => {
+  await expect(page.locator('meta[name="color-scheme"]')).toHaveAttribute('content', 'only light');
+  expect(await page.evaluate(() => getComputedStyle(document.documentElement).colorScheme)).toMatch(/only/);
+});
