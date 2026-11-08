@@ -89,7 +89,7 @@ Taken from the current site. Do not add to or alter these.
 - **Phone field.** The current field is required and only accepts `1234-5678`, blocking normal and overseas numbers. It must accept any reasonable number.
 - **Maths correction.** `math3.html` wrongly gives the final answer as `3pq/(2p + q)`. The correct answer is `3pq/(p + 2q)`. The walkthrough must use the correct result on screen and in any narration.
 - **Old addresses.** `/vision`, `/program` and `/contact` must keep working by redirecting to the matching section of the main page. `/people` remains the profile page.
-- **Retired pages.** `math3.html` is folded into the main page and `practice.html` (the English quiz, not a subject offered) is removed. Both addresses redirect to the home page.
+- **Retired pages.** `math3.html` and `practice.html` are removed with no redirects, by Bernard's decision: they were not relevant.
 - **Analytics.** Keep the existing Google Analytics tag `G-N6KXV30WRK`.
 - **Quality floor.** Works from 320px wide with no sideways scrolling. Tap targets at least 44px. Text contrast at least 4.5:1. Visible keyboard focus. Reduced-motion respected.
 

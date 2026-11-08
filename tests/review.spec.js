@@ -22,7 +22,7 @@ test('walkthrough stays clear of the phone bar on every tap', async ({ page }) =
 
 test('old .html addresses redirect as well', () => {
   const rules = fs.readFileSync(path.join(__dirname, '../site/_redirects'), 'utf8');
-  for (const rule of ['/vision.html /#teach 301', '/program.html /#exams 301', '/contact.html /#contact 301', '/math3.html / 301', '/practice.html / 301']) expect(rules).toContain(rule);
+  for (const rule of ['/vision.html /#teach 301', '/program.html /#exams 301', '/contact.html /#contact 301']) expect(rules).toContain(rule);
 });
 
 test('missing pages offer a way home', async ({ page }) => {
