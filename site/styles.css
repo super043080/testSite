@@ -33,6 +33,7 @@ section[id] { scroll-margin-top: var(--space-m); }
 .logo { font-weight: 700; font-size: 1.125rem; letter-spacing: -.01em; text-decoration: none; display: inline-flex; align-items: center; min-height: 44px; }
 .big { margin: 0; font-family: var(--display); font-weight: 700; font-size: min(30vw, 15svh); line-height: .9; letter-spacing: -.035em; }
 .big span { display: block; }
+.big-name { font-size: min(25vw, 13svh); padding-bottom: 8px; }
 
 .menu { position: relative; }
 .menu summary { list-style: none; cursor: pointer; font-weight: 500; font-size: .9375rem; min-height: 44px; min-width: 44px; display: flex; align-items: center; justify-content: flex-end; }
@@ -100,6 +101,16 @@ form { margin-top: var(--space-l); }
 .hint { color: var(--muted); font-size: .9375rem; margin: -8px 0 18px; }
 form .btn { cursor: pointer; border: 0; font-family: var(--body); }
 
+.profile section { padding: var(--space-l) var(--gutter) 0; }
+.profile section.profile-top { padding-top: var(--space-m); }
+.profile-top h1 { margin: 0 0 var(--space-s); font-size: 1.75rem; font-weight: 500; letter-spacing: -.018em; }
+.profile h2 { font-size: 1.375rem; margin-bottom: var(--space-s); }
+.plain { list-style: none; margin: 0; padding: 0; }
+.plain li { padding: 10px 0; border-top: 1px solid var(--rule); }
+.pubs { margin: 0; padding-left: 1.4em; font-size: .9375rem; }
+.pubs li { padding: 6px 0; overflow-wrap: anywhere; }
+.sub { color: var(--muted); margin-top: var(--space-s); font-size: .9375rem; }
+
 .price { padding: 16px 0; border-top: 1px solid var(--rule); }
 .amount { font-family: var(--display); font-weight: 700; font-size: 3.25rem; line-height: 1.05; letter-spacing: -.03em; }
 .note { color: var(--muted); padding-top: 16px; border-top: 1px solid var(--rule); }
@@ -118,11 +129,14 @@ body { padding-bottom: calc(var(--bar-height) + env(safe-area-inset-bottom)); }
   .frame { display: grid; grid-template-columns: clamp(300px, 33vw, 520px) minmax(0, 1fr); align-items: start; }
   .side { position: sticky; top: 0; height: 100vh; min-height: 0; padding: 18px 28px 28px; }
   .big { font-size: min(10vw, 20vh); }
+  .big-name { font-size: min(8vw, 17vh); padding-bottom: 0; }
   .content { padding: 0 clamp(40px, 6vw, 96px); }
   .content > section, footer { max-width: 680px; }
   section[id] { padding: var(--breath) 0 0; }
   h2 { font-size: 2.375rem; line-height: 1.1; letter-spacing: -.02em; }
   .lead { font-size: 1.3125rem; }
+  .profile section { padding: var(--space-l) 0 0; }
+  .profile-top h1 { font-size: 2.875rem; }
   .pair { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
   .board { margin: 0; padding: 36px 40px; }
   .board ol { font-size: 1.375rem; }
