@@ -17,7 +17,7 @@
     gtag('config', 'G-N6KXV30WRK');
   </script>
 </head>
-<body>
+<body id="top">
   <a class="skip" href="#main">Skip to main content</a>
   <div class="frame">
     <header class="side">
@@ -26,9 +26,11 @@
         <details class="menu">
           <summary>Menu</summary>
           <nav aria-label="Main">
-            <a href="#exams">Exams</a>
+            <a href="#top">Home</a>
             <a href="#bernard">About</a>
-            <a href="#pricing">Pricing</a>
+            <a href="#teach">How I teach</a>
+            <a href="#exams">What I teach</a>
+            <a href="#pricing">Pricing &amp; book</a>
           </nav>
         </details>
       </div>
@@ -37,9 +39,11 @@
 
     <main id="main" class="content">
       <nav class="desk-nav" aria-label="Main">
-        <a href="#exams">Exams</a>
+        <a href="#top">Home</a>
         <a href="#bernard">About</a>
-        <a href="#pricing">Pricing</a>
+        <a href="#teach">How I teach</a>
+        <a href="#exams">What I teach</a>
+        <a href="#pricing">Pricing &amp; book</a>
       </nav>
 
       <section class="intro">
@@ -141,25 +145,20 @@
         <div class="exam" data-exam="igcse"><h3>IGCSE</h3><p>Mathematics<br>Science: Biology, Physics, Chemistry</p></div>
         <div class="exam" data-exam="ib"><h3>IB</h3><p>Mathematics<br>Physics</p></div>
         <div class="exam" data-exam="a-level"><h3>A-level</h3><p>Mathematics<br>Physics</p></div>
-      </section>
-      <section id="how">
-        <h2>How it works</h2>
-        <ol class="steps">
-          <li><strong>A free 1-hour trial lesson.</strong> Your child experiences a real lesson before you decide anything.</li>
-          <li><strong>Regular 75-minute lessons.</strong> Days and times are arranged around your child’s week.</li>
-        </ol>
         <dl class="record">
           <div><dt>Where</dt><dd>At your home, or online by Zoom or Google Meet</dd></div>
           <div><dt>Language</dt><dd>English</dd></div>
         </dl>
       </section>
       <section id="pricing">
-        <h2>Pricing</h2>
+        <h2>Pricing and book</h2>
+        <ol class="steps">
+          <li><strong>A free 1-hour trial lesson.</strong> Your child experiences a real lesson before you decide anything.</li>
+          <li><strong>Regular 75-minute lessons.</strong> Days and times are arranged around your child’s week.</li>
+        </ol>
         <div class="price"><p class="amount">HKD 1,000</p><p>One on one, 75 minutes</p></div>
-        <p class="note">The trial lesson is free.</p>
-      </section>
-      <section id="contact">
-        <h2>Book a free trial, or just ask a question</h2>
+        <div id="contact" class="book">
+        <h3 class="book-title">Book a free trial, or just ask a question</h3>
         <p class="lead">You can reach me on WhatsApp, by email, or with the form below.</p>
         <div class="actions contact-actions">
           <a class="btn" href="https://wa.me/85263302851?text=Hello%20Bernard%2C%20I%27d%20like%20to%20ask%20about%20lessons.">WhatsApp Bernard</a>
@@ -181,6 +180,7 @@
           <div class="field"><label for="f-message">Message</label><textarea id="f-message" name="message" rows="5" required></textarea></div>
           <button class="btn" type="submit">Send message</button>
         </form>
+      </div>
       </section>
 
       <footer>Private lessons with Bernard Wu.</footer>
@@ -193,5 +193,6 @@
   </div>
   <script src="/contact.js" defer></script>
   <script src="/profile.js" defer></script>
+  <script src="/nav.js" defer></script>
 </body>
 </html>

@@ -4,7 +4,7 @@ test.beforeEach(async ({ page }) => { await page.goto('/'); });
 
 test('sections appear in the agreed order', async ({ page }) => {
   const ids = await page.locator('main section[id]').evaluateAll((s) => s.map((e) => e.id));
-  expect(ids).toEqual(['bernard', 'teach', 'exams', 'how', 'pricing', 'contact']);
+  expect(ids).toEqual(['bernard', 'teach', 'exams', 'pricing']);
 });
 
 const subjects = {
@@ -29,18 +29,18 @@ test('pricing is exact', async ({ page }) => {
 });
 
 test('lessons run as a free trial then 75-minute lessons', async ({ page }) => {
-  const text = await page.locator('#how').innerText();
+  const text = await page.locator('#pricing').innerText();
   expect(text).toContain('1-hour trial');
   expect(text).toContain('75-minute lessons');
-  expect(await page.locator('#how .steps li').count()).toBe(2);
+  expect(await page.locator('#pricing .steps li').count()).toBe(2);
 });
 
 test('orientation is gone from the whole page', async ({ page }) => {
   expect(await page.locator('body').innerText()).not.toMatch(/orientation/i);
 });
 
-test('format facts are present', async ({ page }) => {
-  const text = await page.locator('#how').innerText();
+test('format facts sit with what I teach', async ({ page }) => {
+  const text = await page.locator('#exams').innerText();
   for (const s of ['Zoom', 'Google Meet', 'English']) expect(text).toContain(s);
   expect(await page.content()).not.toContain('Cantonese');
 });
@@ -69,4 +69,8 @@ test('how I teach uses the agreed wording', async ({ page }) => {
     'I teach students to ask why, connect ideas, and work through unfamiliar problems—not simply memorise steps.',
     'I use the syllabus and past papers to guide original practice questions, with AI supporting my analysis. Practice targets gaps, reinforces key skills, and builds towards exam-style problems. The aim is to help your child enter the exam hall confident, prepared, and ready to think independently.',
   ]) expect(text).toContain(s);
+});
+
+test('booking lives inside pricing', async ({ page }) => {
+  await expect(page.locator('#pricing #contact form[name="contact"]')).toHaveCount(1);
 });
